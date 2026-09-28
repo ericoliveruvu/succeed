@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Succeed in School — Instructor Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#01B6D1; --cyan-dk:#0193A9; --crimson:#BD1C56; --green:#6DB344; --gold:#FFB81C;
+  --ink:#1F2933; --slate:#5A6672; --mute:#8A949E; --line:#E3E7EA; --wash:#F5F7F8; --paper:#fff;
+  --r:10px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink); background:var(--wash);
+  font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 72px}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* header */
+header{background:var(--paper);border-bottom:1px solid var(--line)}
+.hd{max-width:760px;margin:0 auto;padding:20px 18px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{margin:0;font-size:1.32rem;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+.sub{margin:3px 0 0;color:var(--slate);font-size:.92rem}
+.ghost{background:none;border:1px solid var(--line);color:var(--slate);padding:7px 13px;border-radius:var(--r);font-weight:600;font-size:.87rem;white-space:nowrap}
+.ghost:hover{border-color:var(--cyan);color:var(--cyan-dk)}
+.ghost.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* who am i */
+.me{background:var(--paper);border-bottom:1px solid var(--line);padding:11px 0}
+.me-in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.9rem;color:var(--slate)}
+select,input,textarea{font-family:inherit;font-size:.94rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:8px;padding:7px 9px;max-width:100%}
+select:hover,input:hover{border-color:#c9d1d6}
+
+/* hero week */
+.now{background:var(--cyan);color:#fff;border-radius:14px;margin-top:22px;padding:20px 20px 8px;
+  box-shadow:0 1px 2px rgba(31,41,51,.08)}
+.now-lab{font-size:.86rem;font-weight:600;opacity:.9;margin:0 0 2px}
+.now-rng{font-size:1.02rem;font-weight:400;opacity:.82;margin:0 0 16px}
+.sess{background:rgba(255,255,255,.13);border-radius:11px;padding:15px 16px;margin-bottom:12px}
+.sess-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.sess-day{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
+.sess-time{font-size:.9rem;opacity:.85;white-space:nowrap}
+.sess-les{font-size:1.34rem;font-weight:300;line-height:1.25;margin:7px 0 10px;letter-spacing:-.02em}
+.sess-les b{font-weight:700}
+.sess-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.92rem;opacity:.94}
+.sess-meta span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.7;flex:none}
+.mine{box-shadow:inset 0 0 0 2px #fff}
+.you{background:#fff;color:var(--cyan-dk);font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:2px}
+.now-note{font-size:.93rem;background:rgba(0,0,0,.14);border-radius:9px;padding:11px 13px;margin-bottom:12px;line-height:1.45}
+.now-empty{padding:4px 0 16px;font-size:1.02rem;opacity:.9}
+
+/* term */
+h2{font-size:.95rem;font-weight:700;margin:34px 0 12px;letter-spacing:-.005em}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.wk{display:flex;gap:14px;padding:14px 16px;border-top:1px solid var(--line)}
+.wk:first-child{border-top:none}
+.wk.past{opacity:.5}
+.wk.cur{background:#F0FBFD;box-shadow:inset 3px 0 0 var(--cyan)}
+.wk-n{flex:none;width:34px;font-size:.78rem;font-weight:700;color:var(--mute);padding-top:3px}
+.wk-b{flex:1;min-width:0}
+.row{display:flex;gap:10px;align-items:baseline;padding:3px 0;flex-wrap:wrap}
+.row .d{flex:none;width:64px;font-weight:600;font-size:.9rem}
+.row .l{flex:1;min-width:140px;font-size:.94rem}
+.row .l em{font-style:normal;color:var(--mute)}
+.who{font-size:.87rem;color:var(--slate);white-space:nowrap}
+.tag{font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.t-sub{background:#FCEBF1;color:var(--crimson)}
+.t-open{background:#FFF6E0;color:#9A6B00}
+.t-off{background:var(--wash);color:var(--mute)}
+.mini{background:none;border:none;color:var(--mute);font-size:.85rem;font-weight:600;padding:2px 6px;border-radius:6px}
+.mini:hover{color:var(--cyan-dk);background:var(--wash)}
+
+/* roster */
+.ros{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px 8px 6px 14px;
+  font-size:.9rem;display:flex;align-items:center;gap:8px}
+.chip small{color:var(--mute);font-size:.82rem}
+.x{background:none;border:none;color:var(--mute);font-size:1rem;line-height:1;padding:2px 5px;border-radius:50%}
+.x:hover{color:var(--crimson);background:#FCEBF1}
+
+/* forms */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-bottom:4px}
+.f input,.f select,.f textarea{width:100%}
+.btn{background:var(--cyan);border:1px solid var(--cyan);color:#fff;font-weight:700;
+  padding:9px 18px;border-radius:var(--r);font-size:.94rem}
+.btn:hover{background:var(--cyan-dk);border-color:var(--cyan-dk)}
+.btn.q{background:none;color:var(--slate);border-color:var(--line);font-weight:600}
+.btn.q:hover{background:var(--wash);color:var(--ink)}
+.btn.dgr{background:none;color:var(--crimson);border-color:#F0C8D6}
+.btn.dgr:hover{background:#FCEBF1}
+.acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.hint{font-size:.85rem;color:var(--mute);margin:8px 0 0;line-height:1.45}
+
+/* modal */
+.veil{position:fixed;inset:0;background:rgba(31,41,51,.45);display:flex;align-items:center;
+  justify-content:center;padding:16px;z-index:50}
+.modal{background:var(--paper);border-radius:14px;padding:22px;width:100%;max-width:460px;
+  max-height:88vh;overflow:auto;box-shadow:0 12px 32px rgba(31,41,51,.24)}
+.modal h3{margin:0 0 4px;font-size:1.1rem}
+.modal .when{color:var(--slate);font-size:.9rem;margin:0 0 18px}
+
+.note{background:#FFFBEF;border:1px solid #F5E3B8;border-radius:10px;padding:12px 14px;
+  font-size:.89rem;color:#6B5518;line-height:1.5;margin-top:26px}
+.foot{margin-top:20px;font-size:.83rem;color:var(--mute);line-height:1.55}
+.load{padding:60px 0;text-align:center;color:var(--mute)}
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr}
+  .hd{flex-direction:column}
+  .row .d{width:auto}
+}
+</style>
+</head>
+<body>
+<header><div class="hd">
+  <div>
+    <h1>Succeed in School — instructor schedule</h1>
+    <p class="sub" id="subtitle">Westland Stake</p>
+  </div>
+  <button class="ghost" id="editBtn" hidden>Edit schedule</button>
+</div></header>
+
+<div class="me" id="meBar" hidden><div class="me-in">
+  <label for="meSel" style="margin:0">I am</label>
+  <select id="meSel"><option value="">Choose your name</option></select>
+  <span id="meCount"></span>
+</div></div>
+
+<div class="wrap">
+  <div class="load" id="loading">Loading the schedule…</div>
+  <main id="app" hidden></main>
+</div>
+
+<div id="modalRoot"></div>
+
+<!-- ====================================================================
+     FIREBASE SETUP — do this once:
+     1. Go to https://console.firebase.google.com → Add project (any name,
+        skip Google Analytics — not needed).
+     2. In the project: Build → Firestore Database → Create database →
+        Start in test mode → pick any region → Enable.
+     3. Click the gear icon → Project settings → scroll to "Your apps" →
+        click the </> (web) icon → register app (any nickname, no hosting
+        needed) → copy the firebaseConfig object it shows you.
+     4. Paste your six values into FIREBASE_CONFIG below, replacing the
+        placeholder text in quotes.
+     5. In Firestore → Rules tab, replace the rules with:
+          rules_version = '2';
+          service cloud.firestore {
+            match /databases/{database}/documents {
+              match /sis-board/{docId} { allow read, write: if true; }
+            }
+          }
+        (This keeps everything else in your Google account private and only
+        opens this one small collection — fine for non-sensitive scheduling
+        data, per the note already on this page about keeping youth names off it.)
+     ==================================================================== -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAf5yDlKPnlT7xgE3tfPkUQxg4izZB2qk8",
+  authDomain: "succeed-in-school.firebaseapp.com",
+  projectId: "succeed-in-school",
+  storageBucket: "succeed-in-school.firebasestorage.app",
+  messagingSenderId: "519921024395",
+  appId: "1:519921024395:web:11c8d1ac1aaf27495a838e"
+};
+let db=null, boardRef=null;
+try{
+  if(FIREBASE_CONFIG.apiKey.indexOf('PASTE')===-1){
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db=firebase.firestore();
+    boardRef=db.collection('sis-board').doc('state');
+  }
+}catch(e){ console.error('Firebase init failed', e); }
+</script>
+
+<script>
+const K='sis-board-v1', KME='sis-me-v1';
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* Official "Succeed in School: Study and Life Skills" lesson sequence
+   (churchofjesuschrist.org/study/manual/succeed-in-school-study-and-life-skills).
+   Index matches the lesson number (index 0 is unused). If your stake is
+   running a different Succeed in School resource (Intermediate Math/
+   Reading/Writing, Exam Prep, etc.), replace this list with that
+   workbook's lesson titles instead — these are specific to Study and
+   Life Skills. */
+const LESSON_TITLES=[
+  null,
+  'Understand the Importance of Education',
+  'Treat Others with Respect',
+  'Improve Your Home Learning Space',
+  'Make Educational Goals',
+  'Humbly Ask for Help',
+  'Develop a Growth Mindset',
+  'Overcome Challenges through Choices',
+  'Organize Your Class Notes',
+  'Use a Study Plan',
+  'Use Critical Thinking to Make Decisions',
+  'Learn in the Savior’s Way',
+  'Organize Tasks and Priorities',
+  'Create a Weekly Schedule',
+  'Use Meaning to Memorize',
+  'Organize Information to Memorize',
+  'Review Your Class Notes',
+  'Learn from Mistakes',
+  'Be an Obedient Student',
+  'Solve Problems',
+  'Prepare for Exams',
+  'Read Exam Questions Carefully',
+  'Manage Time on Exams',
+  'Answer Multiple-Choice Questions',
+  'Review Progress on Your Goals',
+  'Be a Diligent Learner',
+  'Think Positively',
+  'Know Who You Really Are',
+  'Be Honest in Your Writing',
+  'Manage Your Stress',
+  'Answer True or False Questions',
+  'Think Positively During an Exam',
+  'Ask Good Questions',
+  'Overcome Procrastination',
+  'Continue Your Education',
+  'Choose a Mentor',
+  'Meet with Your Mentor',
+  'Prepare for Your Future',
+  'Discover Your Future Path',
+  'Choose a Job or Career',
+  'Evaluate Your Goals',
+  'Be Safe and Wise Online',
+  'Use Social Media Wisely',
+  'Learn Ways to Get a Job',
+  'Prepare for a Job Interview'
+];
+
+let D=null, me='', editing=false;
+
+/* ---------- dates (string-based, no timezone drift) ---------- */
+const P=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const S=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const add=(s,n)=>{const d=P(s);d.setDate(d.getDate()+n);return S(d)};
+const today=()=>S(new Date());
+const fmt=s=>{const d=P(s);return `${SHORT[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}`};
+const fmtLong=s=>{const d=P(s);return `${DAYS[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}`};
+const weekStart=s=>{const d=P(s);return add(S(d),-d.getDay())};
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* Editing (and the term setup screen) are locked behind a shared passcode so
+   teachers only ever see the read-only schedule. Change ADMIN_PASSCODE to
+   whatever word you want the admin login to use. */
+const ADMIN_PASSCODE='schedule2026';
+let unlocked=false;
+try{unlocked=localStorage.getItem('sis-unlocked-v1')==='1';}catch(e){}
+
+/* ---------- storage ----------
+   The schedule itself (D) is shared by everyone via Firebase Firestore, so
+   any instructor's changes show up for everyone else. "Who am I" (me) is
+   personal to this browser, so that stays local. If Firebase isn't
+   configured yet (see setup block above), the board falls back to
+   this-browser-only storage so the page still works while you set it up. */
+const HAS_HOST = typeof window.storage==='object' && window.storage
+                 && typeof window.storage.get==='function';
+const store={
+  async get(k){
+    if(HAS_HOST){ const r=await window.storage.get(k,true); return r?r.value:null; }
+    try{ return localStorage.getItem(k); }catch(e){ return null; }
+  },
+  async set(k,v){
+    if(HAS_HOST){ await window.storage.set(k,v,true); return; }
+    try{ localStorage.setItem(k,v); }catch(e){ throw e; }
+  }
+};
+let firstSnapshot=true;
+async function load(){
+  try{
+    if(boardRef){
+      const snap=await boardRef.get();
+      D = (snap.exists && snap.data().json) ? JSON.parse(snap.data().json) : null;
+    }else{
+      const v=await store.get(K); D=v?JSON.parse(v):null;
+    }
+  }catch(e){D=null;}
+  try{me=localStorage.getItem(KME)||'';}catch(e){me='';}
+  if(!D) D={title:'Westland Stake',instructors:[],sessions:[],time:'3:30 – 4:30 PM',room:''};
+  D.instructors=D.instructors||[]; D.sessions=D.sessions||[];
+  if(boardRef){
+    boardRef.onSnapshot(snap=>{
+      if(firstSnapshot){firstSnapshot=false;return;}
+      if(snap.exists && snap.data().json){
+        D=JSON.parse(snap.data().json);
+        D.instructors=D.instructors||[]; D.sessions=D.sessions||[];
+        render();
+      }
+    });
+  }
+}
+async function save(){
+  try{
+    if(boardRef){ await boardRef.set({json:JSON.stringify(D),updated:Date.now()}); }
+    else{ await store.set(K,JSON.stringify(D)); }
+  }
+  catch(e){alert('That change did not save. Check your connection and try again.');}
+}
+async function saveMe(v){me=v;try{localStorage.setItem(KME,v);}catch(e){}}
+
+/* ---------- helpers ---------- */
+const byDate=()=>[...D.sessions].sort((a,b)=>a.date.localeCompare(b.date));
+const nameOf=id=>{const i=D.instructors.find(x=>x.id===id);return i?i.name:''};
+const isMine=s=>me&&(s.instructor===me||s.sub===me);
+const uid=()=>Math.random().toString(36).slice(2,9);
+
+function weeks(){
+  const out=[],map={};
+  byDate().forEach(s=>{const w=weekStart(s.date);(map[w]=map[w]||[]).push(s)});
+  Object.keys(map).sort().forEach((w,i)=>out.push({start:w,n:i+1,sessions:map[w]}));
+  return out;
+}
+
+/* ---------- render ---------- */
+function render(){
+  document.getElementById('loading').hidden=true;
+  const app=document.getElementById('app'); app.hidden=false;
+  document.getElementById('subtitle').textContent=D.title||'Westland Stake';
+  document.getElementById('editBtn').hidden=false;
+  document.getElementById('editBtn').textContent = !unlocked ? 'Admin login' : (editing?'Done editing':'Edit schedule');
+  document.getElementById('editBtn').classList.toggle('on',editing);
+
+  if(!D.sessions.length){
+    if(unlocked){ app.innerHTML=setupHTML(); wireSetup(); }
+    else{ app.innerHTML=`<div class="panel" style="margin-top:26px;text-align:center;color:var(--slate)">
+      <p style="margin:0">The schedule hasn't been set up yet. Check back soon.</p></div>`; }
+    document.getElementById('meBar').hidden=true; return;
+  }
+
+  // who-am-I bar
+  const bar=document.getElementById('meBar'); bar.hidden=false;
+  const sel=document.getElementById('meSel');
+  sel.innerHTML='<option value="">Choose your name</option>'+
+    D.instructors.map(i=>`<option value="${esc(i.name)}"${i.name===me?' selected':''}>${esc(i.name)}</option>`).join('');
+  const mineLeft=byDate().filter(s=>isMine(s)&&s.date>=today()).length;
+  document.getElementById('meCount').textContent = me? (mineLeft?`${mineLeft} session${mineLeft>1?'':''} ahead of you`:'No sessions ahead') : '';
+  document.getElementById('meCount').style.color='var(--mute)';
+
+  app.innerHTML = heroHTML() + termHTML() + rosterHTML() + footHTML();
+  wireBoard();
+}
+
+function heroHTML(){
+  const t=today(), ws=weekStart(t), we=add(ws,6);
+  let list=D.sessions.filter(s=>s.date>=ws&&s.date<=we).sort((a,b)=>a.date.localeCompare(b.date));
+  let lab='This week', rng=`${fmt(ws)} – ${fmt(we)}`, note=D.weekNote;
+  if(!list.length){
+    const nxt=byDate().filter(s=>s.date>=t);
+    if(nxt.length){
+      const nws=weekStart(nxt[0].date);
+      list=D.sessions.filter(s=>weekStart(s.date)===nws).sort((a,b)=>a.date.localeCompare(b.date));
+      lab='Next class week'; rng=`${fmt(nws)} – ${fmt(add(nws,6))}`;
+    }
+  }
+  const body = list.length
+    ? list.map(s=>{
+        const who=s.sub?`${esc(s.sub)} <span style="opacity:.75">covering for ${esc(s.instructor||'—')}</span>`
+                       :(s.instructor?esc(s.instructor):'<span style="opacity:.8">No instructor assigned</span>');
+        const you=isMine(s)?'<span class="you">You</span>':'';
+        return `<div class="sess${isMine(s)?' mine':''}">
+          <div class="sess-top"><span class="sess-day">${fmtLong(s.date)}${you}</span>
+            <span class="sess-time">${esc(s.time||D.time||'')}</span></div>
+          <p class="sess-les">${s.lesson?`<b>Lesson ${esc(s.lesson)}</b> · `:''}${esc(s.topic||'Topic to be set')}</p>
+          <div class="sess-meta"><span><i class="dot"></i>${who}</span>
+            ${s.room||D.room?`<span><i class="dot"></i>${esc(s.room||D.room)}</span>`:''}</div>
+          ${s.notes?`<div class="now-note" style="margin:11px 0 0">${esc(s.notes)}</div>`:''}
+        </div>`}).join('')
+    : `<p class="now-empty">No classes scheduled. Add sessions below to get started.</p>`;
+  return `<section class="now"><p class="now-lab">${lab}</p><p class="now-rng">${rng}</p>
+    ${note?`<div class="now-note">${esc(note)}</div>`:''}${body}</section>`;
+}
+
+function termHTML(){
+  const t=today(), curW=weekStart(t);
+  const rows=weeks().map(w=>{
+    const past=add(w.start,6)<t, cur=w.start===curW;
+    const inner=w.sessions.map(s=>{
+      let tag='';
+      if(s.status==='cancelled') tag='<span class="tag t-off">Cancelled</span>';
+      else if(s.sub) tag='<span class="tag t-sub">Substitute</span>';
+      else if(!s.instructor) tag='<span class="tag t-open">Needs instructor</span>';
+      const who=s.sub?esc(s.sub):(s.instructor?esc(s.instructor):'—');
+      return `<div class="row">
+        <span class="d">${fmt(s.date)}</span>
+        <span class="l">${s.lesson?`Lesson ${esc(s.lesson)} · `:''}${s.topic?esc(s.topic):'<em>Topic to be set</em>'}</span>
+        <span class="who">${who}</span>${tag}
+        ${editing?`<button class="mini" data-edit="${s.id}">Edit</button>`:''}
+      </div>`}).join('');
+    return `<div class="wk${past?' past':''}${cur?' cur':''}"><div class="wk-n">Wk ${w.n}</div><div class="wk-b">${inner}</div></div>`;
+  }).join('');
+  return `<h2>Full term</h2><div class="card">${rows}</div>
+    ${editing?`<div class="acts"><button class="btn" id="addSess">Add a session</button>
+      <button class="btn q" id="setNote">Set this week's note</button>
+      <button class="btn dgr" id="reset">Clear everything</button></div>`:''}`;
+}
+
+function rosterHTML(){
+  const chips=D.instructors.length
+    ? D.instructors.map(i=>`<span class="chip">${esc(i.name)}${i.subject?` <small>${esc(i.subject)}</small>`:''}
+        ${editing?`<button class="x" data-del="${i.id}" aria-label="Remove ${esc(i.name)}">×</button>`:''}</span>`).join('')
+    : `<p class="hint" style="margin:0">No instructors yet.</p>`;
+  return `<h2>Instructors</h2><div class="ros">${chips}</div>
+    ${editing?`<div class="acts"><button class="btn q" id="addInst">Add an instructor</button></div>`:''}`;
+}
+
+function footHTML(){
+  return `<div class="note">Anyone with this link can see and change the schedule. Keep youth names off this
+    board — instructor assignments and lesson numbers only.</div>
+    <p class="foot">Succeed in School is directed by stake leaders and supported by Seminaries and Institutes of Religion.
+    Questions: Eric Oliver, Stake Education Specialist.</p>`;
+}
+
+/* ---------- setup (empty state) ---------- */
+function setupHTML(){
+  return `<h2 style="margin-top:26px">Set up the term</h2>
+  <div class="panel f">
+    <p class="hint" style="margin:0 0 16px">Fill this in once and the whole term is built for you.
+      You can change any individual session afterward. Lesson topics are pre-filled from the
+      Study and Life Skills lesson sequence — edit any individual session if you're running a
+      different resource or need to adjust one.</p>
+    <div class="grid">
+      <div><label for="s_first">First class date</label><input type="date" id="s_first" value="2026-10-27"></div>
+      <div><label for="s_weeks">Number of weeks</label><input type="number" id="s_weeks" value="12" min="1" max="40"></div>
+      <div><label for="s_d1">Class day</label><select id="s_d1">${DAYS.map((d,i)=>`<option value="${i}"${i===2?' selected':''}>${d}</option>`).join('')}</select></div>
+      <div><label for="s_d2">Second class day</label><select id="s_d2"><option value="">None</option>${DAYS.map((d,i)=>`<option value="${i}"${i===4?' selected':''}>${d}</option>`).join('')}</select></div>
+      <div><label for="s_time">Class time</label><input id="s_time" value="3:30 – 4:30 PM"></div>
+      <div><label for="s_room">Room or building</label><input id="s_room" placeholder="e.g. Relief Society room"></div>
+      <div><label for="s_start">First lesson number</label><input type="number" id="s_start" value="1" min="1"></div>
+      <div><label for="s_title">Stake or class name</label><input id="s_title" value="Westland Stake"></div>
+    </div>
+    <div class="acts"><button class="btn" id="build">Build the schedule</button></div>
+    <p class="hint">Lesson numbers increase by one each session. Add instructor names next, then assign them.</p>
+  </div>`;
+}
+function wireSetup(){
+  document.getElementById('build').onclick=async()=>{
+    const first=document.getElementById('s_first').value;
+    const n=Math.max(1,+document.getElementById('s_weeks').value||1);
+    const d1=+document.getElementById('s_d1').value;
+    const d2v=document.getElementById('s_d2').value, d2=d2v===''?null:+d2v;
+    let lesson=Math.max(1,+document.getElementById('s_start').value||1);
+    if(!first){alert('Choose a first class date to build the term.');return;}
+    D.time=document.getElementById('s_time').value.trim();
+    D.room=document.getElementById('s_room').value.trim();
+    D.title=document.getElementById('s_title').value.trim()||'Westland Stake';
+    const ws=weekStart(first), days=[d1,...(d2!==null&&d2!==d1?[d2]:[])].sort((a,b)=>a-b);
+    const out=[];
+    for(let w=0;w<n;w++) for(const dy of days){
+      const dt=add(ws,w*7+dy);
+      if(dt<first) continue;
+      const lnum=lesson++;
+      out.push({id:uid(),date:dt,lesson:String(lnum),topic:LESSON_TITLES[lnum]||'',instructor:'',sub:'',
+                room:'',time:'',notes:'',status:'on'});
+    }
+    D.sessions=out.sort((a,b)=>a.date.localeCompare(b.date));
+    editing=true; await save(); render();
+  };
+}
+
+/* ---------- wiring ---------- */
+function wireBoard(){
+  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>sessionModal(b.dataset.edit));
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+    const i=D.instructors.find(x=>x.id===b.dataset.del);
+    if(!confirm(`Remove ${i.name} from the roster? Sessions already assigned keep the name.`))return;
+    D.instructors=D.instructors.filter(x=>x.id!==b.dataset.del); await save(); render();
+  });
+  const a=document.getElementById('addSess'); if(a) a.onclick=()=>sessionModal(null);
+  const ai=document.getElementById('addInst'); if(ai) ai.onclick=instructorModal;
+  const nb=document.getElementById('setNote'); if(nb) nb.onclick=noteModal;
+  const rs=document.getElementById('reset'); if(rs) rs.onclick=async()=>{
+    if(!confirm('Clear the whole schedule and roster? This cannot be undone.'))return;
+    D={title:D.title,instructors:[],sessions:[],time:D.time,room:D.room}; editing=false; await save(); render();
+  };
+}
+document.getElementById('editBtn').onclick=()=>{
+  if(!unlocked){ adminLoginModal(()=>{editing=true; render();}); return; }
+  editing=!editing; render();
+};
+document.getElementById('meSel').onchange=async e=>{await saveMe(e.target.value);render()};
+
+/* ---------- modals ---------- */
+function openModal(html,onReady){
+  const root=document.getElementById('modalRoot');
+  root.innerHTML=`<div class="veil"><div class="modal f" role="dialog" aria-modal="true">${html}</div></div>`;
+  root.querySelector('.veil').onclick=e=>{if(e.target===e.currentTarget)closeModal()};
+  document.addEventListener('keydown',escClose);
+  onReady&&onReady(root);
+  const f=root.querySelector('input,select,textarea'); f&&f.focus();
+}
+const closeModal=()=>{document.getElementById('modalRoot').innerHTML='';document.removeEventListener('keydown',escClose)};
+function escClose(e){if(e.key==='Escape')closeModal()}
+
+function sessionModal(id){
+  const s=id?D.sessions.find(x=>x.id===id):{id:uid(),date:today(),lesson:'',topic:'',instructor:'',sub:'',room:'',time:'',notes:'',status:'on'};
+  const opts=v=>`<option value="">Not assigned</option>`+
+    D.instructors.map(i=>`<option value="${esc(i.name)}"${i.name===v?' selected':''}>${esc(i.name)}</option>`).join('');
+  openModal(`
+    <h3>${id?'Edit session':'Add a session'}</h3>
+    <p class="when">${id?fmtLong(s.date):'New class session'}</p>
+    <div class="grid">
+      <div><label for="m_date">Date</label><input type="date" id="m_date" value="${s.date}"></div>
+      <div><label for="m_time">Time</label><input id="m_time" value="${esc(s.time)}" placeholder="${esc(D.time||'3:30 – 4:30 PM')}"></div>
+      <div><label for="m_les">Lesson number</label><input id="m_les" value="${esc(s.lesson)}"></div>
+      <div><label for="m_room">Room</label><input id="m_room" value="${esc(s.room)}" placeholder="${esc(D.room||'Default room')}"></div>
+    </div>
+    <div style="margin-top:12px"><label for="m_top">Lesson title</label><input id="m_top" value="${esc(s.topic)}" placeholder="e.g. Setting study goals"></div>
+    <div class="grid" style="margin-top:12px">
+      <div><label for="m_ins">Instructor</label><select id="m_ins">${opts(s.instructor)}</select></div>
+      <div><label for="m_sub">Substitute</label><select id="m_sub">${opts(s.sub)}</select></div>
+    </div>
+    <div style="margin-top:12px"><label for="m_st">Status</label><select id="m_st">
+      <option value="on"${s.status!=='cancelled'?' selected':''}>Class is on</option>
+      <option value="cancelled"${s.status==='cancelled'?' selected':''}>Cancelled</option></select></div>
+    <div style="margin-top:12px"><label for="m_note">Note for the instructor</label>
+      <textarea id="m_note" rows="2" placeholder="Anything they need to bring or know">${esc(s.notes)}</textarea></div>
+    <div class="acts">
+      <button class="btn" id="m_save">Save session</button>
+      <button class="btn q" id="m_cancel">Cancel</button>
+      ${id?'<button class="btn dgr" id="m_del">Delete</button>':''}
+    </div>`,root=>{
+    root.querySelector('#m_cancel').onclick=closeModal;
+    const del=root.querySelector('#m_del');
+    if(del) del.onclick=async()=>{
+      if(!confirm('Delete this session?'))return;
+      D.sessions=D.sessions.filter(x=>x.id!==id); await save(); closeModal(); render();
+    };
+    root.querySelector('#m_save').onclick=async()=>{
+      const g=q=>root.querySelector(q).value.trim();
+      if(!g('#m_date')){alert('A session needs a date.');return;}
+      const n={...s,date:g('#m_date'),time:g('#m_time'),lesson:g('#m_les'),room:g('#m_room'),
+        topic:g('#m_top'),instructor:g('#m_ins'),sub:g('#m_sub'),status:g('#m_st'),notes:g('#m_note')};
+      if(n.sub&&n.sub===n.instructor) n.sub='';
+      const i=D.sessions.findIndex(x=>x.id===n.id);
+      if(i>=0) D.sessions[i]=n; else D.sessions.push(n);
+      D.sessions.sort((a,b)=>a.date.localeCompare(b.date));
+      await save(); closeModal(); render();
+    };
+  });
+}
+
+function instructorModal(){
+  openModal(`
+    <h3>Add an instructor</h3><p class="when">They will appear in the assignment lists.</p>
+    <div><label for="i_name">Name</label><input id="i_name" placeholder="First and last name"></div>
+    <div style="margin-top:12px"><label for="i_sub">Class they teach</label>
+      <select id="i_sub">
+        <option>Study &amp; Life Skills</option><option>Reading &amp; Writing</option>
+        <option>Mathematics</option><option>Exam Prep</option><option>Substitute only</option></select></div>
+    <div class="acts"><button class="btn" id="i_save">Add instructor</button>
+      <button class="btn q" id="i_cancel">Cancel</button></div>`,root=>{
+    root.querySelector('#i_cancel').onclick=closeModal;
+    root.querySelector('#i_save').onclick=async()=>{
+      const n=root.querySelector('#i_name').value.trim();
+      if(!n){alert('Enter a name to add an instructor.');return;}
+      D.instructors.push({id:uid(),name:n,subject:root.querySelector('#i_sub').value});
+      await save(); closeModal(); render();
+    };
+  });
+}
+
+function adminLoginModal(onSuccess){
+  openModal(`
+    <h3>Admin login</h3><p class="when">Enter the passcode to make changes to this schedule.
+      Everyone else just sees the schedule below — no login needed to view it.</p>
+    <div><label for="a_pw">Passcode</label><input type="password" id="a_pw" placeholder="Passcode"></div>
+    <div class="acts"><button class="btn" id="a_go">Log in</button>
+      <button class="btn q" id="a_cancel">Cancel</button></div>`,root=>{
+    root.querySelector('#a_cancel').onclick=closeModal;
+    const tryLogin=()=>{
+      const pw=root.querySelector('#a_pw').value;
+      if(pw!==ADMIN_PASSCODE){alert('Incorrect passcode.');return;}
+      unlocked=true;
+      try{localStorage.setItem('sis-unlocked-v1','1');}catch(e){}
+      closeModal();
+      onSuccess&&onSuccess();
+    };
+    root.querySelector('#a_go').onclick=tryLogin;
+    root.querySelector('#a_pw').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+  });
+}
+
+function noteModal(){
+  openModal(`
+    <h3>This week's note</h3><p class="when">Shows at the top of the board for everyone.</p>
+    <textarea id="n_txt" rows="3" style="width:100%" placeholder="e.g. Bring extra pencils — the supply box is low.">${esc(D.weekNote||'')}</textarea>
+    <div class="acts"><button class="btn" id="n_save">Save note</button>
+      <button class="btn q" id="n_cancel">Cancel</button>
+      <button class="btn dgr" id="n_clear">Clear note</button></div>`,root=>{
+    root.querySelector('#n_cancel').onclick=closeModal;
+    root.querySelector('#n_clear').onclick=async()=>{D.weekNote='';await save();closeModal();render()};
+    root.querySelector('#n_save').onclick=async()=>{
+      D.weekNote=root.querySelector('#n_txt').value.trim(); await save(); closeModal(); render();
+    };
+  });
+}
+
+load().then(render).catch(()=>{
+  document.getElementById('loading').textContent='The schedule could not load. Refresh the page to try again.';
+});
+</script>
+</body>
+</html>

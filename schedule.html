@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schedule — Succeed in School, Westland Stake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#01B6D1; --cyan-dk:#0193A9; --crimson:#BD1C56; --green:#6DB344; --gold:#FFB81C;
+  --ink:#1F2933; --slate:#5A6672; --mute:#8A949E; --line:#E3E7EA; --wash:#F5F7F8; --paper:#fff;
+  --r:10px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink); background:var(--wash);
+  font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 72px}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* header */
+header{background:var(--paper);border-bottom:1px solid var(--line)}
+.hd{max-width:760px;margin:0 auto;padding:20px 18px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{margin:0;font-size:1.32rem;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+.sub{margin:3px 0 0;color:var(--slate);font-size:.92rem}
+.ghost{background:none;border:1px solid var(--line);color:var(--slate);padding:7px 13px;border-radius:var(--r);font-weight:600;font-size:.87rem;white-space:nowrap}
+.ghost:hover{border-color:var(--cyan);color:var(--cyan-dk)}
+.ghost.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* who am i */
+.me{background:var(--paper);border-bottom:1px solid var(--line);padding:11px 0}
+.me-in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.9rem;color:var(--slate)}
+select,input,textarea{font-family:inherit;font-size:.94rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:8px;padding:7px 9px;max-width:100%}
+select:hover,input:hover{border-color:#c9d1d6}
+
+/* hero week */
+.now{background:var(--cyan);color:#fff;border-radius:14px;margin-top:22px;padding:20px 20px 8px;
+  box-shadow:0 1px 2px rgba(31,41,51,.08)}
+.now-lab{font-size:.86rem;font-weight:600;opacity:.9;margin:0 0 2px}
+.now-rng{font-size:1.02rem;font-weight:400;opacity:.82;margin:0 0 16px}
+.sess{background:rgba(255,255,255,.13);border-radius:11px;padding:15px 16px;margin-bottom:12px}
+.sess-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.sess-day{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
+.sess-time{font-size:.9rem;opacity:.85;white-space:nowrap}
+.sess-les{font-size:1.34rem;font-weight:300;line-height:1.25;margin:7px 0 10px;letter-spacing:-.02em}
+.sess-les b{font-weight:700}
+.sess-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.92rem;opacity:.94}
+.sess-meta span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.7;flex:none}
+.mine{box-shadow:inset 0 0 0 2px #fff}
+.you{background:#fff;color:var(--cyan-dk);font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:2px}
+.now-note{font-size:.93rem;background:rgba(0,0,0,.14);border-radius:9px;padding:11px 13px;margin-bottom:12px;line-height:1.45}
+.now-empty{padding:4px 0 16px;font-size:1.02rem;opacity:.9}
+
+/* term */
+h2{font-size:.95rem;font-weight:700;margin:34px 0 12px;letter-spacing:-.005em}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.wk{display:flex;gap:14px;padding:14px 16px;border-top:1px solid var(--line)}
+.wk:first-child{border-top:none}
+.wk.past{opacity:.5}
+.wk.cur{background:#F0FBFD;box-shadow:inset 3px 0 0 var(--cyan)}
+.wk-n{flex:none;width:34px;font-size:.78rem;font-weight:700;color:var(--mute);padding-top:3px}
+.wk-b{flex:1;min-width:0}
+.row{display:flex;gap:10px;align-items:baseline;padding:3px 0;flex-wrap:wrap}
+.row .d{flex:none;width:64px;font-weight:600;font-size:.9rem}
+.row .l{flex:1;min-width:140px;font-size:.94rem}
+.row .l em{font-style:normal;color:var(--mute)}
+.who{font-size:.87rem;color:var(--slate);white-space:nowrap}
+.tag{font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.t-sub{background:#FCEBF1;color:var(--crimson)}
+.t-open{background:#FFF6E0;color:#9A6B00}
+.t-off{background:var(--wash);color:var(--mute)}
+.mini{background:none;border:none;color:var(--mute);font-size:.85rem;font-weight:600;padding:2px 6px;border-radius:6px}
+.mini:hover{color:var(--cyan-dk);background:var(--wash)}
+
+/* roster */
+.ros{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px 8px 6px 14px;
+  font-size:.9rem;display:flex;align-items:center;gap:8px}
+.chip small{color:var(--mute);font-size:.82rem}
+.x{background:none;border:none;color:var(--mute);font-size:1rem;line-height:1;padding:2px 5px;border-radius:50%}
+.x:hover{color:var(--crimson);background:#FCEBF1}
+
+/* forms */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-bottom:4px}
+.f input,.f select,.f textarea{width:100%}
+.btn{background:var(--cyan);border:1px solid var(--cyan);color:#fff;font-weight:700;
+  padding:9px 18px;border-radius:var(--r);font-size:.94rem}
+.btn:hover{background:var(--cyan-dk);border-color:var(--cyan-dk)}
+.btn.q{background:none;color:var(--slate);border-color:var(--line);font-weight:600}
+.btn.q:hover{background:var(--wash);color:var(--ink)}
+.btn.dgr{background:none;color:var(--crimson);border-color:#F0C8D6}
+.btn.dgr:hover{background:#FCEBF1}
+.acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.hint{font-size:.85rem;color:var(--mute);margin:8px 0 0;line-height:1.45}
+
+/* modal */
+.veil{position:fixed;inset:0;background:rgba(31,41,51,.45);display:flex;align-items:center;
+  justify-content:center;padding:16px;z-index:50}
+.modal{background:var(--paper);border-radius:14px;padding:22px;width:100%;max-width:460px;
+  max-height:88vh;overflow:auto;box-shadow:0 12px 32px rgba(31,41,51,.24)}
+.modal h3{margin:0 0 4px;font-size:1.1rem}
+.modal .when{color:var(--slate);font-size:.9rem;margin:0 0 18px}
+
+.note{background:#FFFBEF;border:1px solid #F5E3B8;border-radius:10px;padding:12px 14px;
+  font-size:.89rem;color:#6B5518;line-height:1.5;margin-top:26px}
+.foot{margin-top:20px;font-size:.83rem;color:var(--mute);line-height:1.55}
+.load{padding:60px 0;text-align:center;color:var(--mute)}
+
+/* site navigation (shared by all three pages) */
+.site{background:var(--ink);color:#fff}
+.site-in{max-width:760px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:space-between;gap:6px 18px;flex-wrap:wrap}
+.brand{color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:9px;padding:4px 0}
+.brand:hover{color:#fff}
+.brand i{width:9px;height:9px;border-radius:50%;background:var(--cyan);flex:none}
+.brand span{font-weight:400;opacity:.65}
+.links{display:flex;gap:2px;flex-wrap:wrap;margin:0 -10px}
+.links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.9rem;font-weight:600;padding:7px 10px;border-radius:7px}
+.links a:hover{color:#fff;background:rgba(255,255,255,.09)}
+.links a[aria-current="page"]{color:#fff;background:rgba(1,182,209,.22)}
+@media print{.site{display:none}}
+
+.hd-acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.who-in{font-size:.84rem;color:var(--mute)}
+.linkbtn{background:none;border:none;padding:0;color:var(--cyan-dk);font-weight:600;font-size:.86rem;text-decoration:underline;text-underline-offset:2px}
+.linkbtn:hover{color:var(--ink)}
+.err{color:var(--crimson);font-size:.88rem;margin:10px 0 0;min-height:1.2em}
+.okmsg{color:#3F7A1E;font-size:.88rem;margin:10px 0 0}
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr}
+  .hd{flex-direction:column}
+  .row .d{width:auto}
+}
+</style>
+</head>
+<body>
+<nav class="site" aria-label="Succeed in School pages"><div class="site-in">
+  <a class="brand" href="index.html"><i aria-hidden="true"></i>Succeed in School <span>Westland Stake</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="schedule.html" aria-current="page">Schedule</a>
+    <a href="guide.html">Instructor guide</a>
+  </div>
+</div></nav>
+
+<header><div class="hd">
+  <div>
+    <h1>Instructor schedule</h1>
+    <p class="sub" id="subtitle">Westland Stake</p>
+  </div>
+  <div class="hd-acts">
+    <span class="who-in" id="whoIn" hidden></span>
+    <button class="ghost" id="editBtn" hidden>Sign in to edit</button>
+    <button class="linkbtn" id="signOutBtn" hidden>Sign out</button>
+  </div>
+</div></header>
+
+<div class="me" id="meBar" hidden><div class="me-in">
+  <label for="meSel" style="margin:0">I am</label>
+  <select id="meSel"><option value="">Choose your name</option></select>
+  <span id="meCount"></span>
+</div></div>
+
+<div class="wrap">
+  <div class="load" id="loading">Loading the schedule…</div>
+  <main id="app" hidden></main>
+</div>
+
+<div id="modalRoot"></div>
+
+<!-- Firebase: see SETUP.md for how sign-in, editor accounts, and the
+     database rules are configured. The config below is meant to be public;
+     the database rules are what decide who can change anything. -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAf5yDlKPnlT7xgE3tfPkUQxg4izZB2qk8",
+  authDomain: "succeed-in-school.firebaseapp.com",
+  projectId: "succeed-in-school",
+  storageBucket: "succeed-in-school.firebasestorage.app",
+  messagingSenderId: "519921024395",
+  appId: "1:519921024395:web:11c8d1ac1aaf27495a838e"
+};
+let db=null, auth=null, boardRef=null;
+try{
+  firebase.initializeApp(FIREBASE_CONFIG);
+  db=firebase.firestore();
+  auth=firebase.auth();
+  boardRef=db.collection('sis-board').doc('state');
+}catch(e){ console.error('Firebase init failed', e); }
+</script>
+
+<script>
+const KME='sis-me-v1';
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* Official "Succeed in School: Study and Life Skills" lesson sequence
+   (churchofjesuschrist.org/study/manual/succeed-in-school-study-and-life-skills).
+   Index matches the lesson number (index 0 is unused). If your stake is
+   running a different Succeed in School resource (Intermediate Math/
+   Reading/Writing, Exam Prep, etc.), replace this list with that
+   workbook's lesson titles instead — these are specific to Study and
+   Life Skills. */
+const LESSON_TITLES=[
+  null,
+  'Understand the Importance of Education',
+  'Treat Others with Respect',
+  'Improve Your Home Learning Space',
+  'Make Educational Goals',
+  'Humbly Ask for Help',
+  'Develop a Growth Mindset',
+  'Overcome Challenges through Choices',
+  'Organize Your Class Notes',
+  'Use a Study Plan',
+  'Use Critical Thinking to Make Decisions',
+  'Learn in the Savior’s Way',
+  'Organize Tasks and Priorities',
+  'Create a Weekly Schedule',
+  'Use Meaning to Memorize',
+  'Organize Information to Memorize',
+  'Review Your Class Notes',
+  'Learn from Mistakes',
+  'Be an Obedient Student',
+  'Solve Problems',
+  'Prepare for Exams',
+  'Read Exam Questions Carefully',
+  'Manage Time on Exams',
+  'Answer Multiple-Choice Questions',
+  'Review Progress on Your Goals',
+  'Be a Diligent Learner',
+  'Think Positively',
+  'Know Who You Really Are',
+  'Be Honest in Your Writing',
+  'Manage Your Stress',
+  'Answer True or False Questions',
+  'Think Positively During an Exam',
+  'Ask Good Questions',
+  'Overcome Procrastination',
+  'Continue Your Education',
+  'Choose a Mentor',
+  'Meet with Your Mentor',
+  'Prepare for Your Future',
+  'Discover Your Future Path',
+  'Choose a Job or Career',
+  'Evaluate Your Goals',
+  'Be Safe and Wise Online',
+  'Use Social Media Wisely',
+  'Learn Ways to Get a Job',
+  'Prepare for a Job Interview'
+];
+
+let D=null, me='', editing=false;
+
+/* ---------- dates (string-based, no timezone drift) ---------- */
+const P=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const S=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const add=(s,n)=>{const d=P(s);d.setDate(d.getDate()+n);return S(d)};
+const today=()=>S(new Date());
+const fmt=s=>{const d=P(s);return `${SHORT[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}`};
+const fmtLong=s=>{const d=P(s);return `${DAYS[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}`};
+const weekStart=s=>{const d=P(s);return add(S(d),-d.getDay())};
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- who can edit ----------
+   Editing is controlled by Firebase, not by this page. A person can change
+   the schedule only if (1) they are signed in with an account created in the
+   Firebase console, and (2) their account's UID has a document in the
+   "admins" collection. The database rules enforce both, so reading this
+   page's source code gives nobody any access. See SETUP.md. */
+let user=null, isEditor=false, wantEdit=false;
+
+async function checkEditor(u){
+  if(!u) return false;
+  try{ const d=await db.collection('admins').doc(u.uid).get(); return d.exists; }
+  catch(e){ return false; }
+}
+
+/* ---------- storage ----------
+   The schedule (D) lives in one Firestore document that everyone can read.
+   "Who am I" (me) is personal to this browser, so it stays in localStorage. */
+let firstSnapshot=true;
+function normalize(){
+  if(!D) D={title:'Westland Stake',instructors:[],sessions:[],time:'3:30 – 4:30 PM',room:''};
+  D.instructors=D.instructors||[]; D.sessions=D.sessions||[];
+}
+async function load(){
+  if(!boardRef) throw new Error('Firebase unavailable');
+  const snap=await boardRef.get();
+  D = (snap.exists && snap.data().json) ? JSON.parse(snap.data().json) : null;
+  try{me=localStorage.getItem(KME)||'';}catch(e){me='';}
+  normalize();
+  boardRef.onSnapshot(snap=>{
+    if(firstSnapshot){firstSnapshot=false;return;}
+    if(snap.exists && snap.data().json){ D=JSON.parse(snap.data().json); normalize(); render(); }
+  });
+}
+async function save(){
+  if(!isEditor){ alert('Sign in with an editor account to make changes.'); return false; }
+  try{ await boardRef.set({json:JSON.stringify(D),updated:Date.now()}); return true; }
+  catch(e){
+    if(e && e.code==='permission-denied')
+      alert('That change was not saved: this account does not have edit access. Ask Eric to add it to the editor list.');
+    else alert('That change did not save. Check your connection and try again.');
+    try{ const snap=await boardRef.get(); D=(snap.exists&&snap.data().json)?JSON.parse(snap.data().json):null; normalize(); render(); }catch(_){}
+    return false;
+  }
+}
+async function saveMe(v){me=v;try{localStorage.setItem(KME,v);}catch(e){}}
+
+/* ---------- helpers ---------- */
+const byDate=()=>[...D.sessions].sort((a,b)=>a.date.localeCompare(b.date));
+const nameOf=id=>{const i=D.instructors.find(x=>x.id===id);return i?i.name:''};
+/* Each session has two instructor slots. Instructor 1 teaches the lesson;
+   Instructor 2 is the second adult in the room. Each slot can have its own
+   substitute. Two adults must be present at every class. */
+const slot1=s=>s.sub||s.instructor||'';
+const slot2=s=>s.sub2||s.instructor2||'';
+const shortStaffed=s=>s.status!=='cancelled' && !(slot1(s)&&slot2(s));
+const isMine=s=>me&&[s.instructor,s.instructor2,s.sub,s.sub2].includes(me);
+const uid=()=>Math.random().toString(36).slice(2,9);
+
+function weeks(){
+  const out=[],map={};
+  byDate().forEach(s=>{const w=weekStart(s.date);(map[w]=map[w]||[]).push(s)});
+  Object.keys(map).sort().forEach((w,i)=>out.push({start:w,n:i+1,sessions:map[w]}));
+  return out;
+}
+
+/* ---------- render ---------- */
+function render(){
+  if(!isEditor) editing=false;
+  document.getElementById('loading').hidden=true;
+  const app=document.getElementById('app'); app.hidden=false;
+  document.getElementById('subtitle').textContent=D.title||'Westland Stake';
+  const eb=document.getElementById('editBtn');
+  eb.hidden=false;
+  eb.textContent = !isEditor ? 'Sign in to edit' : (editing?'Done editing':'Edit schedule');
+  eb.classList.toggle('on',editing);
+  if(user && !isEditor) eb.hidden=true;
+  const wi=document.getElementById('whoIn');
+  wi.hidden=!user;
+  wi.textContent = user ? (isEditor ? `Signed in as ${user.email}` : `${user.email} does not have edit access`) : '';
+  document.getElementById('signOutBtn').hidden=!user;
+
+  if(!D.sessions.length){
+    if(isEditor){ app.innerHTML=setupHTML(); wireSetup(); }
+    else{ app.innerHTML=`<div class="panel" style="margin-top:26px;text-align:center;color:var(--slate)">
+      <p style="margin:0">The schedule hasn't been set up yet. Check back soon.</p></div>`; }
+    document.getElementById('meBar').hidden=true; return;
+  }
+
+  // who-am-I bar
+  const bar=document.getElementById('meBar'); bar.hidden=false;
+  const sel=document.getElementById('meSel');
+  sel.innerHTML='<option value="">Choose your name</option>'+
+    D.instructors.map(i=>`<option value="${esc(i.name)}"${i.name===me?' selected':''}>${esc(i.name)}</option>`).join('');
+  const mineLeft=byDate().filter(s=>isMine(s)&&s.date>=today()).length;
+  document.getElementById('meCount').textContent = me? (mineLeft?`${mineLeft} session${mineLeft>1?'':''} ahead of you`:'No sessions ahead') : '';
+  document.getElementById('meCount').style.color='var(--mute)';
+
+  app.innerHTML = heroHTML() + termHTML() + rosterHTML() + footHTML();
+  wireBoard();
+}
+
+function heroHTML(){
+  const t=today(), ws=weekStart(t), we=add(ws,6);
+  let list=D.sessions.filter(s=>s.date>=ws&&s.date<=we).sort((a,b)=>a.date.localeCompare(b.date));
+  let lab='This week', rng=`${fmt(ws)} – ${fmt(we)}`, note=D.weekNote;
+  if(!list.length){
+    const nxt=byDate().filter(s=>s.date>=t);
+    if(nxt.length){
+      const nws=weekStart(nxt[0].date);
+      list=D.sessions.filter(s=>weekStart(s.date)===nws).sort((a,b)=>a.date.localeCompare(b.date));
+      lab='Next class week'; rng=`${fmt(nws)} – ${fmt(add(nws,6))}`;
+    }
+  }
+  const body = list.length
+    ? list.map(s=>{
+        const slot=(n,ins,sub)=>`<span><i class="dot"></i>${n}: ${sub
+            ? `${esc(sub)} <span style="opacity:.75">covering for ${esc(ins||'—')}</span>`
+            : (ins?esc(ins):'<b>needed</b>')}</span>`;
+        const who=slot('Instructor 1',s.instructor,s.sub)+slot('Instructor 2',s.instructor2,s.sub2);
+        const you=isMine(s)?'<span class="you">You</span>':'';
+        return `<div class="sess${isMine(s)?' mine':''}">
+          <div class="sess-top"><span class="sess-day">${fmtLong(s.date)}${you}</span>
+            <span class="sess-time">${esc(s.time||D.time||'')}</span></div>
+          <p class="sess-les">${s.lesson?`<b>Lesson ${esc(s.lesson)}</b> · `:''}${esc(s.topic||'Topic to be set')}</p>
+          <div class="sess-meta">${who}
+            ${s.room||D.room?`<span><i class="dot"></i>${esc(s.room||D.room)}</span>`:''}</div>
+          ${shortStaffed(s)?`<div class="now-note" style="margin:11px 0 0"><b>This class needs a second instructor.</b> Two adults must be present, so let Eric know if you can cover.</div>`:''}
+          ${s.notes?`<div class="now-note" style="margin:11px 0 0">${esc(s.notes)}</div>`:''}
+        </div>`}).join('')
+    : `<p class="now-empty">No classes scheduled. Add sessions below to get started.</p>`;
+  return `<section class="now"><p class="now-lab">${lab}</p><p class="now-rng">${rng}</p>
+    ${note?`<div class="now-note">${esc(note)}</div>`:''}${body}</section>`;
+}
+
+function termHTML(){
+  const t=today(), curW=weekStart(t);
+  const rows=weeks().map(w=>{
+    const past=add(w.start,6)<t, cur=w.start===curW;
+    const inner=w.sessions.map(s=>{
+      let tag='';
+      if(s.status==='cancelled') tag='<span class="tag t-off">Cancelled</span>';
+      else if(shortStaffed(s)) tag='<span class="tag t-open">Needs instructor</span>';
+      else if(s.sub||s.sub2) tag='<span class="tag t-sub">Substitute</span>';
+      const who=`${slot1(s)?esc(slot1(s)):'—'} &amp; ${slot2(s)?esc(slot2(s)):'—'}`;
+      return `<div class="row">
+        <span class="d">${fmt(s.date)}</span>
+        <span class="l">${s.lesson?`Lesson ${esc(s.lesson)} · `:''}${s.topic?esc(s.topic):'<em>Topic to be set</em>'}</span>
+        <span class="who">${who}</span>${tag}
+        ${editing?`<button class="mini" data-edit="${s.id}">Edit</button>`:''}
+      </div>`}).join('');
+    return `<div class="wk${past?' past':''}${cur?' cur':''}"><div class="wk-n">Wk ${w.n}</div><div class="wk-b">${inner}</div></div>`;
+  }).join('');
+  const short=byDate().filter(s=>s.date>=t&&shortStaffed(s)).length;
+  const warn=short?`<div class="note" style="margin:0 0 12px">${short} upcoming ${short>1?'classes do':'class does'} not have two instructors yet.
+    Class cannot go ahead with only one adult, so these need a substitute or a second instructor.</div>`:'';
+  return `<h2>Full term</h2>${warn}<div class="card">${rows}</div>
+    ${editing?`<div class="acts"><button class="btn" id="addSess">Add a session</button>
+      <button class="btn q" id="rotBtn">Set up a rotation</button>
+      <button class="btn q" id="defBtn">Class time and room</button>
+      <button class="btn q" id="setNote">Set this week's note</button>
+      <button class="btn dgr" id="reset">Clear everything</button></div>`:''}`;
+}
+
+function rosterHTML(){
+  const chips=D.instructors.length
+    ? D.instructors.map(i=>`<span class="chip">${esc(i.name)}${i.subject?` <small>${esc(i.subject)}</small>`:''}
+        ${editing?`<button class="x" data-del="${i.id}" aria-label="Remove ${esc(i.name)}">×</button>`:''}</span>`).join('')
+    : `<p class="hint" style="margin:0">No instructors yet.</p>`;
+  return `<h2>Instructors</h2><div class="ros">${chips}</div>
+    ${editing?`<div class="acts"><button class="btn q" id="addInst">Add an instructor</button></div>`:''}`;
+}
+
+function footHTML(){
+  return `<div class="note">Anyone with this link can see this schedule; only signed-in editors can change it.
+    Keep youth names off this board — instructor assignments and lesson numbers only.</div>
+    <p class="foot">Succeed in School is directed by stake leaders and supported by Seminaries and Institutes of Religion.
+    Questions: Eric Oliver, Stake Education Specialist.</p>`;
+}
+
+/* ---------- setup (empty state) ---------- */
+function setupHTML(){
+  return `<h2 style="margin-top:26px">Set up the term</h2>
+  <div class="panel f">
+    <p class="hint" style="margin:0 0 16px">Fill this in once and the whole term is built for you.
+      You can change any individual session afterward. Lesson topics are pre-filled from the
+      Study and Life Skills lesson sequence — edit any individual session if you're running a
+      different resource or need to adjust one.</p>
+    <div class="grid">
+      <div><label for="s_first">First class date</label><input type="date" id="s_first" value="2026-10-19"></div>
+      <div><label for="s_weeks">Number of weeks</label><input type="number" id="s_weeks" value="12" min="1" max="40"></div>
+      <div><label for="s_d1">Class day</label><select id="s_d1">${DAYS.map((d,i)=>`<option value="${i}"${i===1?' selected':''}>${d}</option>`).join('')}</select></div>
+      <div><label for="s_d2">Second class day</label><select id="s_d2"><option value="">None</option>${DAYS.map((d,i)=>`<option value="${i}"${i===3?' selected':''}>${d}</option>`).join('')}</select></div>
+      <div><label for="s_time">Class time</label><input id="s_time" value="3:30 – 4:30 PM"></div>
+      <div><label for="s_room">Room or building</label><input id="s_room" placeholder="e.g. Relief Society room"></div>
+      <div><label for="s_start">First lesson number</label><input type="number" id="s_start" value="1" min="1"></div>
+      <div><label for="s_title">Stake or class name</label><input id="s_title" value="Westland Stake"></div>
+    </div>
+    <div class="acts"><button class="btn" id="build">Build the schedule</button></div>
+    <p class="hint">Each class gets the next lesson in workbook order. Add instructor names next, then use
+      “Set up a rotation” to assign two instructors to each class day.</p>
+  </div>`;
+}
+function wireSetup(){
+  document.getElementById('build').onclick=async()=>{
+    const first=document.getElementById('s_first').value;
+    const n=Math.max(1,+document.getElementById('s_weeks').value||1);
+    const d1=+document.getElementById('s_d1').value;
+    const d2v=document.getElementById('s_d2').value, d2=d2v===''?null:+d2v;
+    let lesson=Math.max(1,+document.getElementById('s_start').value||1);
+    if(!first){alert('Choose a first class date to build the term.');return;}
+    D.time=document.getElementById('s_time').value.trim();
+    D.room=document.getElementById('s_room').value.trim();
+    D.title=document.getElementById('s_title').value.trim()||'Westland Stake';
+    const ws=weekStart(first), days=[d1,...(d2!==null&&d2!==d1?[d2]:[])].sort((a,b)=>a-b);
+    const out=[];
+    for(let w=0;w<n;w++){
+      for(const dy of days){
+      const dt=add(ws,w*7+dy);
+      if(dt<first) continue;
+      const lnum=lesson++;                // a new lesson every class, in workbook order
+      out.push({id:uid(),date:dt,lesson:String(lnum),topic:LESSON_TITLES[lnum]||'',instructor:'',instructor2:'',sub:'',sub2:'',
+                room:'',time:'',notes:'',status:'on'});
+      }
+    }
+    D.sessions=out.sort((a,b)=>a.date.localeCompare(b.date));
+    editing=true; await save(); render();
+  };
+}
+
+/* ---------- wiring ---------- */
+function wireBoard(){
+  document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>sessionModal(b.dataset.edit));
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{
+    const i=D.instructors.find(x=>x.id===b.dataset.del);
+    if(!confirm(`Remove ${i.name} from the roster? Sessions already assigned keep the name.`))return;
+    D.instructors=D.instructors.filter(x=>x.id!==b.dataset.del); await save(); render();
+  });
+  const a=document.getElementById('addSess'); if(a) a.onclick=()=>sessionModal(null);
+  const rb=document.getElementById('rotBtn'); if(rb) rb.onclick=rotationModal;
+  const db2=document.getElementById('defBtn'); if(db2) db2.onclick=defaultsModal;
+  const ai=document.getElementById('addInst'); if(ai) ai.onclick=instructorModal;
+  const nb=document.getElementById('setNote'); if(nb) nb.onclick=noteModal;
+  const rs=document.getElementById('reset'); if(rs) rs.onclick=async()=>{
+    if(!confirm('Clear the whole schedule and roster? This cannot be undone.'))return;
+    D={title:D.title,instructors:[],sessions:[],time:D.time,room:D.room}; editing=false; await save(); render();
+  };
+}
+document.getElementById('editBtn').onclick=()=>{
+  if(!isEditor){ signInModal(); return; }
+  editing=!editing; render();
+};
+document.getElementById('signOutBtn').onclick=async()=>{ editing=false; await auth.signOut(); };
+document.getElementById('meSel').onchange=async e=>{await saveMe(e.target.value);render()};
+
+/* ---------- modals ---------- */
+function openModal(html,onReady){
+  const root=document.getElementById('modalRoot');
+  root.innerHTML=`<div class="veil"><div class="modal f" role="dialog" aria-modal="true">${html}</div></div>`;
+  root.querySelector('.veil').onclick=e=>{if(e.target===e.currentTarget)closeModal()};
+  document.addEventListener('keydown',escClose);
+  onReady&&onReady(root);
+  const f=root.querySelector('input,select,textarea'); f&&f.focus();
+}
+const closeModal=()=>{document.getElementById('modalRoot').innerHTML='';document.removeEventListener('keydown',escClose)};
+function escClose(e){if(e.key==='Escape')closeModal()}
+
+function sessionModal(id){
+  const s=id?D.sessions.find(x=>x.id===id):{id:uid(),date:today(),lesson:'',topic:'',instructor:'',instructor2:'',sub:'',sub2:'',room:'',time:'',notes:'',status:'on'};
+  const opts=v=>`<option value="">Not assigned</option>`+
+    D.instructors.map(i=>`<option value="${esc(i.name)}"${i.name===v?' selected':''}>${esc(i.name)}</option>`).join('');
+  openModal(`
+    <h3>${id?'Edit session':'Add a session'}</h3>
+    <p class="when">${id?fmtLong(s.date):'New class session'}</p>
+    <div class="grid">
+      <div><label for="m_date">Date</label><input type="date" id="m_date" value="${s.date}"></div>
+      <div><label for="m_time">Time</label><input id="m_time" value="${esc(s.time)}" placeholder="${esc(D.time||'3:30 – 4:30 PM')}"></div>
+      <div><label for="m_les">Lesson number</label><input id="m_les" value="${esc(s.lesson)}"></div>
+      <div><label for="m_room">Room</label><input id="m_room" value="${esc(s.room)}" placeholder="${esc(D.room||'Default room')}"></div>
+    </div>
+    <div style="margin-top:12px"><label for="m_top">Lesson title</label><input id="m_top" value="${esc(s.topic)}" placeholder="e.g. Setting study goals"></div>
+    <div class="grid" style="margin-top:12px">
+      <div><label for="m_ins">Instructor 1 (teaches the lesson)</label><select id="m_ins">${opts(s.instructor)}</select></div>
+      <div><label for="m_sub">Substitute for Instructor 1</label><select id="m_sub">${opts(s.sub)}</select></div>
+      <div><label for="m_ins2">Instructor 2</label><select id="m_ins2">${opts(s.instructor2)}</select></div>
+      <div><label for="m_sub2">Substitute for Instructor 2</label><select id="m_sub2">${opts(s.sub2)}</select></div>
+    </div>
+    <p class="hint" style="margin-top:6px"><button class="linkbtn" id="m_swap" type="button">Swap Instructor 1 and 2</button></p>
+    <div style="margin-top:12px"><label for="m_st">Status</label><select id="m_st">
+      <option value="on"${s.status!=='cancelled'?' selected':''}>Class is on</option>
+      <option value="cancelled"${s.status==='cancelled'?' selected':''}>Cancelled</option></select></div>
+    <div style="margin-top:12px"><label for="m_note">Note for the instructor</label>
+      <textarea id="m_note" rows="2" placeholder="Anything they need to bring or know">${esc(s.notes)}</textarea></div>
+    <div class="acts">
+      <button class="btn" id="m_save">Save session</button>
+      <button class="btn q" id="m_cancel">Cancel</button>
+      ${id?'<button class="btn dgr" id="m_del">Delete</button>':''}
+    </div>`,root=>{
+    root.querySelector('#m_cancel').onclick=closeModal;
+    root.querySelector('#m_swap').onclick=()=>{
+      const q=x=>root.querySelector(x);
+      [q('#m_ins').value,q('#m_ins2').value]=[q('#m_ins2').value,q('#m_ins').value];
+      [q('#m_sub').value,q('#m_sub2').value]=[q('#m_sub2').value,q('#m_sub').value];
+    };
+    const del=root.querySelector('#m_del');
+    if(del) del.onclick=async()=>{
+      if(!confirm('Delete this session?'))return;
+      D.sessions=D.sessions.filter(x=>x.id!==id); await save(); closeModal(); render();
+    };
+    root.querySelector('#m_save').onclick=async()=>{
+      const g=q=>root.querySelector(q).value.trim();
+      if(!g('#m_date')){alert('A session needs a date.');return;}
+      const n={...s,date:g('#m_date'),time:g('#m_time'),lesson:g('#m_les'),room:g('#m_room'),
+        topic:g('#m_top'),instructor:g('#m_ins'),instructor2:g('#m_ins2'),sub:g('#m_sub'),sub2:g('#m_sub2'),
+        status:g('#m_st'),notes:g('#m_note')};
+      if(n.sub&&n.sub===n.instructor) n.sub='';
+      if(n.sub2&&n.sub2===n.instructor2) n.sub2='';
+      const people=[slot1(n),slot2(n)].filter(Boolean);
+      if(people.length===2&&people[0]===people[1]){alert('The same person is in both instructor slots. Choose two different people.');return;}
+      const i=D.sessions.findIndex(x=>x.id===n.id);
+      if(i>=0) D.sessions[i]=n; else D.sessions.push(n);
+      D.sessions.sort((a,b)=>a.date.localeCompare(b.date));
+      await save(); closeModal(); render();
+    };
+  });
+}
+
+/* Assign a pair of instructors to every session on one class day. They trade
+   Instructor 1 (who teaches) each week. Substitutes already scheduled are kept. */
+function rotationModal(){
+  const dayNums=[...new Set(D.sessions.map(x=>P(x.date).getDay()))].sort();
+  const sel=(id,v)=>`<select id="${id}"><option value="">Choose</option>${D.instructors.map(i=>
+    `<option value="${esc(i.name)}"${i.name===v?' selected':''}>${esc(i.name)}</option>`).join('')}</select>`;
+  const firstUp=(byDate().find(x=>x.date>=today())||byDate()[0]||{date:today()}).date;
+  openModal(`
+    <h3>Set up a rotation</h3><p class="when">Assign two instructors to every class on one day. They trade
+      Instructor 1, the one who teaches, each week. Substitutes already scheduled stay in place.</p>
+    <div class="grid">
+      <div><label for="r_day">Class day</label><select id="r_day">${dayNums.map(d=>`<option value="${d}">${DAYS[d]}s</option>`).join('')}</select></div>
+      <div><label for="r_from">Starting on or after</label><input type="date" id="r_from" value="${firstUp}"></div>
+      <div><label for="r_a">Teaches the first week</label>${sel('r_a','')}</div>
+      <div><label for="r_b">Teaches the second week</label>${sel('r_b','')}</div>
+    </div>
+    <p class="err" id="r_err" role="alert"></p>
+    <div class="acts" style="margin-top:6px"><button class="btn" id="r_go">Apply rotation</button>
+      <button class="btn q" id="r_cancel">Cancel</button></div>`,root=>{
+    const q=x=>root.querySelector(x);
+    q('#r_cancel').onclick=closeModal;
+    q('#r_go').onclick=async()=>{
+      const day=+q('#r_day').value, from=q('#r_from').value, a=q('#r_a').value, b=q('#r_b').value;
+      if(!a||!b){q('#r_err').textContent='Choose both instructors.';return;}
+      if(a===b){q('#r_err').textContent='Choose two different instructors.';return;}
+      const list=byDate().filter(x=>P(x.date).getDay()===day&&x.date>=from);
+      if(!list.length){q('#r_err').textContent='No classes on that day from that date.';return;}
+      if(!confirm(`Assign ${a} and ${b} to ${list.length} ${DAYS[day]} classes, trading who teaches each week?`))return;
+      list.forEach((x,k)=>{ const lead=k%2===0; x.instructor=lead?a:b; x.instructor2=lead?b:a;
+        if(x.sub===x.instructor) x.sub=''; if(x.sub2===x.instructor2) x.sub2=''; });
+      await save(); closeModal(); render();
+    };
+  });
+}
+
+/* The default time and room apply to every class that doesn't set its own,
+   so changing the class time later is one edit instead of one per session. */
+function defaultsModal(){
+  const own=D.sessions.filter(x=>x.time).length, ownR=D.sessions.filter(x=>x.room).length;
+  openModal(`
+    <h3>Class time and room</h3><p class="when">Used for every class unless that class has its own time or room.</p>
+    <div class="grid">
+      <div><label for="d_time">Class time</label><input id="d_time" value="${esc(D.time||'')}" placeholder="3:30 – 4:30 PM"></div>
+      <div><label for="d_room">Room or building</label><input id="d_room" value="${esc(D.room||'')}" placeholder="e.g. Relief Society room"></div>
+    </div>
+    ${own||ownR?`<label style="margin-top:14px;display:flex;gap:8px;align-items:center;font-weight:400">
+      <input type="checkbox" id="d_clear"> Also clear the time and room set on individual classes
+      (${own} with their own time, ${ownR} with their own room)</label>`:''}
+    <div class="acts"><button class="btn" id="d_save">Save</button><button class="btn q" id="d_cancel">Cancel</button></div>`,root=>{
+    const q=x=>root.querySelector(x);
+    q('#d_cancel').onclick=closeModal;
+    q('#d_save').onclick=async()=>{
+      D.time=q('#d_time').value.trim(); D.room=q('#d_room').value.trim();
+      if(q('#d_clear')&&q('#d_clear').checked) D.sessions.forEach(x=>{x.time='';x.room='';});
+      await save(); closeModal(); render();
+    };
+  });
+}
+
+function instructorModal(){
+  openModal(`
+    <h3>Add an instructor</h3><p class="when">They will appear in the assignment lists.</p>
+    <div><label for="i_name">Name</label><input id="i_name" placeholder="First and last name"></div>
+    <div style="margin-top:12px"><label for="i_sub">Class they teach</label>
+      <select id="i_sub">
+        <option>Study &amp; Life Skills</option><option>Reading &amp; Writing</option>
+        <option>Mathematics</option><option>Exam Prep</option><option>Substitute only</option></select></div>
+    <div class="acts"><button class="btn" id="i_save">Add instructor</button>
+      <button class="btn q" id="i_cancel">Cancel</button></div>`,root=>{
+    root.querySelector('#i_cancel').onclick=closeModal;
+    root.querySelector('#i_save').onclick=async()=>{
+      const n=root.querySelector('#i_name').value.trim();
+      if(!n){alert('Enter a name to add an instructor.');return;}
+      D.instructors.push({id:uid(),name:n,subject:root.querySelector('#i_sub').value});
+      await save(); closeModal(); render();
+    };
+  });
+}
+
+function signInModal(){
+  openModal(`
+    <h3>Sign in to edit</h3><p class="when">Editors sign in with the email and password Eric set up for them.
+      Everyone else can view the schedule without signing in.</p>
+    <div><label for="a_em">Email</label><input type="email" id="a_em" autocomplete="username"></div>
+    <div style="margin-top:12px"><label for="a_pw">Password</label><input type="password" id="a_pw" autocomplete="current-password"></div>
+    <p class="err" id="a_err" role="alert"></p>
+    <div class="acts" style="margin-top:6px"><button class="btn" id="a_go">Sign in</button>
+      <button class="btn q" id="a_cancel">Cancel</button>
+      <button class="linkbtn" id="a_reset" style="margin-left:auto">Forgot password?</button></div>`,root=>{
+    const em=root.querySelector('#a_em'), pw=root.querySelector('#a_pw'), err=root.querySelector('#a_err');
+    root.querySelector('#a_cancel').onclick=closeModal;
+    const go=root.querySelector('#a_go');
+    const tryLogin=async()=>{
+      err.className='err'; err.textContent='';
+      if(!em.value.trim()||!pw.value){err.textContent='Enter your email and password.';return;}
+      go.disabled=true; go.textContent='Signing in…';
+      try{
+        await auth.signInWithEmailAndPassword(em.value.trim(),pw.value);
+        wantEdit=true; closeModal();         // onAuthStateChanged re-renders
+      }catch(e){
+        const c=e&&e.code||'';
+        err.textContent = c==='auth/too-many-requests' ? 'Too many attempts. Wait a few minutes, or reset your password.'
+          : c==='auth/network-request-failed' ? 'No connection. Check your internet and try again.'
+          : 'That email and password do not match an editor account.';
+        go.disabled=false; go.textContent='Sign in';
+      }
+    };
+    go.onclick=tryLogin;
+    pw.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+    root.querySelector('#a_reset').onclick=async()=>{
+      err.className='err'; err.textContent='';
+      if(!em.value.trim()){err.textContent='Enter your email first, then choose Forgot password.';return;}
+      try{ await auth.sendPasswordResetEmail(em.value.trim()); }catch(e){}
+      err.className='okmsg';
+      err.textContent='If that email has an editor account, a reset link is on its way.';
+    };
+  });
+}
+
+function noteModal(){
+  openModal(`
+    <h3>This week's note</h3><p class="when">Shows at the top of the board for everyone.</p>
+    <textarea id="n_txt" rows="3" style="width:100%" placeholder="e.g. Bring extra pencils — the supply box is low.">${esc(D.weekNote||'')}</textarea>
+    <div class="acts"><button class="btn" id="n_save">Save note</button>
+      <button class="btn q" id="n_cancel">Cancel</button>
+      <button class="btn dgr" id="n_clear">Clear note</button></div>`,root=>{
+    root.querySelector('#n_cancel').onclick=closeModal;
+    root.querySelector('#n_clear').onclick=async()=>{D.weekNote='';await save();closeModal();render()};
+    root.querySelector('#n_save').onclick=async()=>{
+      D.weekNote=root.querySelector('#n_txt').value.trim(); await save(); closeModal(); render();
+    };
+  });
+}
+
+let loaded=false;
+load().then(()=>{ loaded=true; render(); }).catch(()=>{
+  document.getElementById('loading').textContent='The schedule could not load. Refresh the page to try again.';
+});
+if(auth) auth.onAuthStateChanged(async u=>{
+  user=u; isEditor=await checkEditor(u);
+  if(isEditor && wantEdit) editing=true;
+  wantEdit=false;
+  if(!isEditor) editing=false;
+  if(loaded) render();
+});
+</script>
+</body>
+</html>
