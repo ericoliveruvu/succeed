@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Message sent — Succeed in School, Westland Stake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#01B6D1; --cyan-dk:#0193A9; --crimson:#BD1C56; --green:#6DB344; --gold:#FFB81C;
+  --ink:#1F2933; --slate:#5A6672; --mute:#8A949E; --line:#E3E7EA; --wash:#F5F7F8; --paper:#fff;
+  --r:10px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink); background:var(--wash);
+  font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 72px}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* header */
+header{background:var(--paper);border-bottom:1px solid var(--line)}
+.hd{max-width:760px;margin:0 auto;padding:20px 18px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{margin:0;font-size:1.32rem;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+.sub{margin:3px 0 0;color:var(--slate);font-size:.92rem}
+.ghost{background:none;border:1px solid var(--line);color:var(--slate);padding:7px 13px;border-radius:var(--r);font-weight:600;font-size:.87rem;white-space:nowrap}
+.ghost:hover{border-color:var(--cyan);color:var(--cyan-dk)}
+.ghost.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* who am i */
+.me{background:var(--paper);border-bottom:1px solid var(--line);padding:11px 0}
+.me-in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.9rem;color:var(--slate)}
+select,input,textarea{font-family:inherit;font-size:.94rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:8px;padding:7px 9px;max-width:100%}
+select:hover,input:hover{border-color:#c9d1d6}
+
+/* hero week */
+.now{background:var(--cyan);color:#fff;border-radius:14px;margin-top:22px;padding:20px 20px 8px;
+  box-shadow:0 1px 2px rgba(31,41,51,.08)}
+.now-lab{font-size:.86rem;font-weight:600;opacity:.9;margin:0 0 2px}
+.now-rng{font-size:1.02rem;font-weight:400;opacity:.82;margin:0 0 16px}
+.sess{background:rgba(255,255,255,.13);border-radius:11px;padding:15px 16px;margin-bottom:12px}
+.sess-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.sess-day{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
+.sess-time{font-size:.9rem;opacity:.85;white-space:nowrap}
+.sess-les{font-size:1.34rem;font-weight:300;line-height:1.25;margin:7px 0 10px;letter-spacing:-.02em}
+.sess-les b{font-weight:700}
+.sess-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.92rem;opacity:.94}
+.sess-meta span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.7;flex:none}
+.mine{box-shadow:inset 0 0 0 2px #fff}
+.you{background:#fff;color:var(--cyan-dk);font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:2px}
+.now-note{font-size:.93rem;background:rgba(0,0,0,.14);border-radius:9px;padding:11px 13px;margin-bottom:12px;line-height:1.45}
+.now-empty{padding:4px 0 16px;font-size:1.02rem;opacity:.9}
+
+/* term */
+h2{font-size:.95rem;font-weight:700;margin:34px 0 12px;letter-spacing:-.005em}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.wk{display:flex;gap:14px;padding:14px 16px;border-top:1px solid var(--line)}
+.wk:first-child{border-top:none}
+.wk.past{opacity:.5}
+.wk.cur{background:#F0FBFD;box-shadow:inset 3px 0 0 var(--cyan)}
+.wk-n{flex:none;width:34px;font-size:.78rem;font-weight:700;color:var(--mute);padding-top:3px}
+.wk-b{flex:1;min-width:0}
+.row{display:flex;gap:10px;align-items:baseline;padding:3px 0;flex-wrap:wrap}
+.row .d{flex:none;width:64px;font-weight:600;font-size:.9rem}
+.row .l{flex:1;min-width:140px;font-size:.94rem}
+.row .l em{font-style:normal;color:var(--mute)}
+.who{font-size:.87rem;color:var(--slate);white-space:nowrap}
+.tag{font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.t-sub{background:#FCEBF1;color:var(--crimson)}
+.t-open{background:#FFF6E0;color:#9A6B00}
+.t-off{background:var(--wash);color:var(--mute)}
+.mini{background:none;border:none;color:var(--mute);font-size:.85rem;font-weight:600;padding:2px 6px;border-radius:6px}
+.mini:hover{color:var(--cyan-dk);background:var(--wash)}
+
+/* roster */
+.ros{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px 8px 6px 14px;
+  font-size:.9rem;display:flex;align-items:center;gap:8px}
+.chip small{color:var(--mute);font-size:.82rem}
+.x{background:none;border:none;color:var(--mute);font-size:1rem;line-height:1;padding:2px 5px;border-radius:50%}
+.x:hover{color:var(--crimson);background:#FCEBF1}
+
+/* forms */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-bottom:4px}
+.f input,.f select,.f textarea{width:100%}
+.btn{background:var(--cyan);border:1px solid var(--cyan);color:#fff;font-weight:700;
+  padding:9px 18px;border-radius:var(--r);font-size:.94rem}
+.btn:hover{background:var(--cyan-dk);border-color:var(--cyan-dk)}
+.btn.q{background:none;color:var(--slate);border-color:var(--line);font-weight:600}
+.btn.q:hover{background:var(--wash);color:var(--ink)}
+.btn.dgr{background:none;color:var(--crimson);border-color:#F0C8D6}
+.btn.dgr:hover{background:#FCEBF1}
+.acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.hint{font-size:.85rem;color:var(--mute);margin:8px 0 0;line-height:1.45}
+
+/* modal */
+.veil{position:fixed;inset:0;background:rgba(31,41,51,.45);display:flex;align-items:center;
+  justify-content:center;padding:16px;z-index:50}
+.modal{background:var(--paper);border-radius:14px;padding:22px;width:100%;max-width:460px;
+  max-height:88vh;overflow:auto;box-shadow:0 12px 32px rgba(31,41,51,.24)}
+.modal h3{margin:0 0 4px;font-size:1.1rem}
+.modal .when{color:var(--slate);font-size:.9rem;margin:0 0 18px}
+
+.note{background:#FFFBEF;border:1px solid #F5E3B8;border-radius:10px;padding:12px 14px;
+  font-size:.89rem;color:#6B5518;line-height:1.5;margin-top:26px}
+.foot{margin-top:20px;font-size:.83rem;color:var(--mute);line-height:1.55}
+.load{padding:60px 0;text-align:center;color:var(--mute)}
+
+/* site navigation (shared by all three pages) */
+.site{background:var(--ink);color:#fff}
+.site-in{max-width:760px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:space-between;gap:6px 18px;flex-wrap:wrap}
+.brand{color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:9px;padding:4px 0}
+.brand:hover{color:#fff}
+.brand i{width:9px;height:9px;border-radius:50%;background:var(--cyan);flex:none}
+.brand span{font-weight:400;opacity:.65}
+.links{display:flex;gap:2px;flex-wrap:wrap;margin:0 -10px}
+.links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.9rem;font-weight:600;padding:7px 10px;border-radius:7px}
+.links a:hover{color:#fff;background:rgba(255,255,255,.09)}
+.links a[aria-current="page"]{color:#fff;background:rgba(1,182,209,.22)}
+@media print{.site{display:none}}
+
+.hd-acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.who-in{font-size:.84rem;color:var(--mute)}
+.linkbtn{background:none;border:none;padding:0;color:var(--cyan-dk);font-weight:600;font-size:.86rem;text-decoration:underline;text-underline-offset:2px}
+.linkbtn:hover{color:var(--ink)}
+.err{color:var(--crimson);font-size:.88rem;margin:10px 0 0;min-height:1.2em}
+.okmsg{color:#3F7A1E;font-size:.88rem;margin:10px 0 0}
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr}
+  .hd{flex-direction:column}
+  .row .d{width:auto}
+}
+
+/* roll */
+.rollbtn{background:#fff;color:var(--cyan-dk);border:none;font-weight:700;padding:8px 14px;border-radius:var(--r);font-size:.9rem}
+.rollbtn:hover{background:#F0FBFD}
+.f .chk{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;font-size:1rem;font-weight:400;color:var(--ink);cursor:pointer}
+.f .chk input{width:22px;height:22px;accent-color:var(--cyan-dk);flex:none;padding:0}
+.f .chk.on{background:#F0FBFD;border-color:var(--cyan)}
+.addrow{display:flex;gap:8px;align-items:center}
+.f .addrow input{width:auto;flex:1;min-width:0}
+.rollsum{font-size:.9rem;color:var(--slate);margin:12px 0 0}
+
+/* library */
+a.btn{text-decoration:none;display:inline-block}
+.files{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.file{display:flex;align-items:center;gap:12px;padding:13px 16px;border-top:1px solid var(--line)}
+.file:first-child{border-top:none}
+.file-ic{flex:none;width:42px;height:42px;border-radius:9px;background:var(--wash);color:var(--cyan-dk);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:.02em}
+.file-b{flex:1;min-width:0}
+.file-n{font-weight:600;overflow-wrap:anywhere}
+.file-m{font-size:.84rem;color:var(--mute)}
+.empty{padding:16px;color:var(--mute);font-size:.94rem}
+.libhint{font-size:.9rem;color:var(--slate);margin:6px 0 0}
+</style>
+</head>
+<body>
+<nav class="site" aria-label="Succeed in School pages"><div class="site-in">
+  <a class="brand" href="index.html"><i aria-hidden="true"></i>Succeed in School <span>Westland Stake</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="guide.html">Instructor guide</a>
+    <a href="library.html">Library</a>
+  </div>
+</div></nav>
+<div class="wrap">
+  <div class="panel" style="margin-top:26px;text-align:center">
+    <h1 style="font-size:1.4rem;margin-bottom:6px">Thank you. Your message was sent.</h1>
+    <p style="margin:0 0 16px;color:var(--slate)">We will reply within a few days.</p>
+    <a class="btn" href="index.html" style="text-decoration:none;display:inline-block">Back to the home page</a>
+  </div>
+</div>
+</body>
+</html>

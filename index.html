@@ -176,6 +176,15 @@ label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-b
 .where-go:hover{background:var(--ink);color:#fff}
 @media(max-width:560px){.days,.go{grid-template-columns:1fr}.hero-t h1{font-size:1.9rem}.hero-t p{font-size:.98rem}
   .where{flex-wrap:wrap}.where-go{width:100%;text-align:center}}
+
+/* contact form */
+.cform .grid{margin-bottom:12px}
+.cform textarea{width:100%;resize:vertical;min-height:110px}
+.cform .req{color:var(--crimson)}
+.cform .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cform .err{color:var(--crimson);font-size:.9rem;margin:10px 0 0}
+.cform-ok{background:#F0FBFD;border:1px solid #BFE9F0;border-radius:12px;padding:18px;color:var(--ink)}
+.cform-ok b{display:block;margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -185,6 +194,7 @@ label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-b
     <a href="index.html" aria-current="page">Home</a>
     <a href="schedule.html">Schedule</a>
     <a href="guide.html">Instructor guide</a>
+    <a href="library.html">Library</a>
   </div>
 </div></nav>
 
@@ -213,8 +223,28 @@ label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-b
     <a href="https://www.churchofjesuschrist.org/study/manual/succeed-in-school-study-and-life-skills?lang=eng"><b>Study and Life Skills workbook</b><span>The lessons your student will cover, in Gospel Library</span></a>
   </div>
 
+  <h2 id="contact">Questions or comments?</h2>
+  <p class="plain">Want to know more about the program, or want to send a message to the instructors? Send it here and we will reply within a few days. This form is for questions and comments that are not urgent or private. Please don’t use it for anything time-sensitive or confidential. For anything urgent or private, please contact your bishop.</p>
+  <div class="panel f cform">
+    <form id="contactForm" name="contact" method="POST" action="thanks.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact">
+      <input type="hidden" name="subject" value="Succeed in School website message">
+      <p class="hp" aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <div class="grid">
+        <div><label for="c_name">Your name (optional)</label><input id="c_name" name="name" autocomplete="name" maxlength="80"></div>
+        <div><label for="c_email">Your email <span class="req" aria-hidden="true">*</span></label><input id="c_email" name="email" type="email" required autocomplete="email" maxlength="120"></div>
+      </div>
+      <div><label for="c_msg">Your message <span class="req" aria-hidden="true">*</span></label>
+        <textarea id="c_msg" name="message" required maxlength="2000" rows="5"></textarea></div>
+      <div class="acts"><button class="btn" id="c_send" type="submit">Send message</button></div>
+      <p class="err" id="c_err" role="alert" hidden></p>
+      <p class="hint">Your message goes to Eric Oliver, the stake education specialist, who shares it with the instructors as needed.</p>
+    </form>
+    <div class="cform-ok" id="c_ok" role="status" hidden><b>Thank you. Your message was sent.</b>We will reply within a few days.</div>
+  </div>
+
   <p class="foot" style="margin-top:34px">Succeed in School is directed by stake leaders and supported by Seminaries and Institutes of Religion.<br>
-    For questions, contact: Eric Oliver, <a href="mailto: eric.oliver@churchofjesuschrist.org">Stake Education Specialist</a>.<br>
+    For questions, <a href="#contact">send a message</a> to Eric Oliver, Stake Education Specialist.<br>
     This is not an official website of The Church of Jesus Christ of Latter-day Saints.</p>
 </div>
 
@@ -310,6 +340,28 @@ try{
     D=(snap.exists&&snap.data().json)?JSON.parse(snap.data().json):null; render();
   },()=>{ document.getElementById('loading').textContent='Class times could not load. Refresh the page to try again.'; });
 }catch(e){ document.getElementById('loading').textContent='Class times could not load. Refresh the page to try again.'; }
+</script>
+<script>
+/* Contact form. Netlify collects the messages (see the form tag above); this script sends
+   it without leaving the page and shows a thank-you. If scripts are off, the form posts
+   normally and lands on thanks.html. */
+(function(){
+  const f=document.getElementById('contactForm'); if(!f) return;
+  const btn=document.getElementById('c_send'), err=document.getElementById('c_err'), ok=document.getElementById('c_ok');
+  f.addEventListener('submit',async e=>{
+    e.preventDefault();
+    err.hidden=true; btn.disabled=true; btn.textContent='Sending…';
+    try{
+      const body=new URLSearchParams(new FormData(f)).toString();
+      const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+      if(!r.ok) throw new Error('status '+r.status);
+      f.hidden=true; ok.hidden=false; ok.scrollIntoView({block:'nearest'});
+    }catch(x){
+      err.textContent='Your message didn’t send. Please check your connection and try again in a few minutes.';
+      err.hidden=false; btn.disabled=false; btn.textContent='Send message';
+    }
+  });
+})();
 </script>
 </body>
 </html>
