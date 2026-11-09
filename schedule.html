@@ -142,6 +142,16 @@ label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-b
   .hd{flex-direction:column}
   .row .d{width:auto}
 }
+
+/* roll */
+.rollbtn{background:#fff;color:var(--cyan-dk);border:none;font-weight:700;padding:8px 14px;border-radius:var(--r);font-size:.9rem}
+.rollbtn:hover{background:#F0FBFD}
+.f .chk{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;font-size:1rem;font-weight:400;color:var(--ink);cursor:pointer}
+.f .chk input{width:22px;height:22px;accent-color:var(--cyan-dk);flex:none;padding:0}
+.f .chk.on{background:#F0FBFD;border-color:var(--cyan)}
+.addrow{display:flex;gap:8px;align-items:center}
+.f .addrow input{width:auto;flex:1;min-width:0}
+.rollsum{font-size:.9rem;color:var(--slate);margin:12px 0 0}
 </style>
 </head>
 <body>
@@ -282,13 +292,43 @@ const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
    Firebase console, and (2) their account's UID has a document in the
    "admins" collection. The database rules enforce both, so reading this
    page's source code gives nobody any access. See SETUP.md. */
-let user=null, isEditor=false, wantEdit=false;
+let user=null, isEditor=false, isOwner=false, wantEdit=false;
 
+/* An editor whose "admins" document also has the field owner = true is the
+   owner. Owners see the Clear everything, backup, and attendance download
+   buttons. This only hides buttons; the database rules decide what is allowed. */
 async function checkEditor(u){
+  isOwner=false;
   if(!u) return false;
-  try{ const d=await db.collection('admins').doc(u.uid).get(); return d.exists; }
+  try{
+    const d=await db.collection('admins').doc(u.uid).get();
+    if(d.exists) isOwner = d.data().owner===true;
+    return d.exists;
+  }
   catch(e){ return false; }
 }
+
+/* ---------- roll (signed-in editors only) ----------
+   Students live in the sis-students collection and attendance in
+   sis-attendance (one document per session). The database rules let only
+   editors read either one, so nothing here is ever visible to the public. */
+let STU=[], ATT={}, rollUnsubs=[], rollErr='';
+function startRoll(){
+  if(rollUnsubs.length||!db) return;
+  rollErr='';
+  const onErr=e=>{ rollErr=(e&&e.code==='permission-denied')?'denied':'error'; if(loaded) render(); };
+  rollUnsubs.push(db.collection('sis-students').onSnapshot(snap=>{
+    STU=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    rollErr=''; if(loaded) render();
+  },onErr));
+  rollUnsubs.push(db.collection('sis-attendance').onSnapshot(snap=>{
+    ATT={}; snap.docs.forEach(d=>{ATT[d.id]=d.data()}); if(loaded) render();
+  },onErr));
+}
+function stopRoll(){ rollUnsubs.forEach(u=>u()); rollUnsubs=[]; STU=[]; ATT={}; rollErr=''; }
+const rollCount=a=>((a&&a.present)||[]).length+((a&&a.guests)||0);
+const canRoll=s=>isEditor && !rollErr && s.status!=='cancelled' && s.date<=today();
+const activeStu=()=>STU.filter(x=>x.active!==false);
 
 /* ---------- storage ----------
    The schedule (D) lives in one Firestore document that everyone can read.
@@ -373,7 +413,7 @@ function render(){
   document.getElementById('meCount').textContent = me? (mineLeft?`${mineLeft} session${mineLeft>1?'':''} ahead of you`:'No sessions ahead') : '';
   document.getElementById('meCount').style.color='var(--mute)';
 
-  app.innerHTML = heroHTML() + termHTML() + rosterHTML() + footHTML();
+  app.innerHTML = heroHTML() + termHTML() + rosterHTML() + rollSectionHTML() + footHTML();
   wireBoard();
 }
 
@@ -404,6 +444,7 @@ function heroHTML(){
             ${s.room||D.room?`<span><i class="dot"></i>${esc(s.room||D.room)}</span>`:''}</div>
           ${shortStaffed(s)?`<div class="now-note" style="margin:11px 0 0"><b>This class needs a second instructor.</b> Two adults must be present, so let Eric know if you can cover.</div>`:''}
           ${s.notes?`<div class="now-note" style="margin:11px 0 0">${esc(s.notes)}</div>`:''}
+          ${canRoll(s)?`<div style="margin-top:12px"><button class="rollbtn" data-roll="${s.id}">${ATT[s.id]?`Roll taken · ${rollCount(ATT[s.id])} present`:'Take roll'}</button></div>`:''}
         </div>`}).join('')
     : `<p class="now-empty">No classes scheduled. Add sessions below to get started.</p>`;
   return `<section class="now"><p class="now-lab">${lab}</p><p class="now-rng">${rng}</p>
@@ -424,6 +465,7 @@ function termHTML(){
         <span class="d">${fmt(s.date)}</span>
         <span class="l">${s.lesson?`Lesson ${esc(s.lesson)} · `:''}${s.topic?esc(s.topic):'<em>Topic to be set</em>'}</span>
         <span class="who">${who}</span>${tag}
+        ${canRoll(s)?`<button class="mini" data-roll="${s.id}">${ATT[s.id]?`Roll (${rollCount(ATT[s.id])})`:'Roll'}</button>`:''}
         ${editing?`<button class="mini" data-edit="${s.id}">Edit</button>`:''}
       </div>`}).join('');
     return `<div class="wk${past?' past':''}${cur?' cur':''}"><div class="wk-n">Wk ${w.n}</div><div class="wk-b">${inner}</div></div>`;
@@ -436,7 +478,8 @@ function termHTML(){
       <button class="btn q" id="rotBtn">Set up a rotation</button>
       <button class="btn q" id="defBtn">Class time and room</button>
       <button class="btn q" id="setNote">Set this week's note</button>
-      <button class="btn dgr" id="reset">Clear everything</button></div>`:''}`;
+      ${isOwner?`<button class="btn q" id="backupBtn">Download backup</button>
+      <button class="btn dgr" id="reset">Clear everything</button>`:''}</div>`:''}`;
 }
 
 function rosterHTML(){
@@ -448,9 +491,24 @@ function rosterHTML(){
     ${editing?`<div class="acts"><button class="btn q" id="addInst">Add an instructor</button></div>`:''}`;
 }
 
+function rollSectionHTML(){
+  if(!isEditor) return '';
+  if(rollErr==='denied') return `<h2>Roll</h2><div class="note" style="margin-top:0">Roll isn’t switched on yet. Eric needs to publish the updated database rules before roll can be used.</div>`;
+  if(rollErr) return `<h2>Roll</h2><div class="note" style="margin-top:0">The roll could not load. Refresh the page to try again.</div>`;
+  const chips=activeStu().length
+    ? activeStu().map(x=>`<span class="chip">${esc(x.name)}<button class="x" data-rmstu="${x.id}" aria-label="Remove ${esc(x.name)} from the roll">×</button></span>`).join('')
+    : `<p class="hint" style="margin:0">No students yet. Add them here, or while taking roll.</p>`;
+  const taken=Object.keys(ATT).filter(id=>D.sessions.some(s=>s.id===id)).length;
+  return `<h2>Roll</h2><div class="ros">${chips}</div>
+    <p class="rollsum">${activeStu().length} student${activeStu().length===1?'':'s'} on the roll · roll taken for ${taken} class${taken===1?'':'es'}</p>
+    <div class="acts" style="margin-top:10px"><button class="btn q" id="addStu">Add students</button>
+      ${isOwner?`<button class="btn q" id="rollCsv">Download attendance (CSV)</button>`:''}</div>
+    <p class="hint">Only signed-in editors can see this section. Use a first name and last initial. To take roll, use the button on a class above.</p>`;
+}
+
 function footHTML(){
   return `<div class="note">Anyone with this link can see this schedule; only signed-in editors can change it.
-    Keep youth names off this board — instructor assignments and lesson numbers only.</div>
+    Youth names never appear on this public board; the roll is visible only to signed-in editors.</div>
     <p class="foot">Succeed in School is directed by stake leaders and supported by Seminaries and Institutes of Religion.
     Questions: Eric Oliver, Stake Education Specialist.</p>`;
 }
@@ -518,6 +576,16 @@ function wireBoard(){
   const db2=document.getElementById('defBtn'); if(db2) db2.onclick=defaultsModal;
   const ai=document.getElementById('addInst'); if(ai) ai.onclick=instructorModal;
   const nb=document.getElementById('setNote'); if(nb) nb.onclick=noteModal;
+  document.querySelectorAll('[data-roll]').forEach(b=>b.onclick=()=>rollModal(b.dataset.roll));
+  document.querySelectorAll('[data-rmstu]').forEach(b=>b.onclick=async()=>{
+    const st=STU.find(x=>x.id===b.dataset.rmstu);
+    if(!st||!confirm(`Remove ${st.name} from the roll? Past attendance is kept.`)) return;
+    try{ await db.collection('sis-students').doc(st.id).update({active:false}); }
+    catch(e){ alert('That change did not save. Check your connection and try again.'); }
+  });
+  const as=document.getElementById('addStu'); if(as) as.onclick=studentsModal;
+  const rc=document.getElementById('rollCsv'); if(rc) rc.onclick=rollCsv;
+  const bk=document.getElementById('backupBtn'); if(bk) bk.onclick=backupAll;
   const rs=document.getElementById('reset'); if(rs) rs.onclick=async()=>{
     if(!confirm('Clear the whole schedule and roster? This cannot be undone.'))return;
     D={title:D.title,instructors:[],sessions:[],time:D.time,room:D.room}; editing=false; await save(); render();
@@ -600,6 +668,140 @@ function sessionModal(id){
       await save(); closeModal(); render();
     };
   });
+}
+
+/* ---------- roll: add students, take roll, export ---------- */
+async function addStudents(names, existing){
+  const have=new Set((existing||activeStu()).map(x=>String(x.name).toLowerCase()));
+  const out=[];
+  for(const raw of names){
+    const n=String(raw).trim().replace(/\s+/g,' ').slice(0,60);
+    if(!n||have.has(n.toLowerCase())) continue;
+    have.add(n.toLowerCase());
+    const ref=await db.collection('sis-students').add({name:n,active:true,added:Date.now()});
+    out.push({id:ref.id,name:n,active:true});
+  }
+  return out;
+}
+
+function studentsModal(){
+  openModal(`
+    <h3>Add students</h3>
+    <p class="when">One name per line. Use a first name and last initial, like “Sam T.”</p>
+    <textarea id="st_names" rows="6" style="width:100%" placeholder="Sam T.&#10;Maria G."></textarea>
+    <p class="err" id="st_err" role="alert"></p>
+    <div class="acts" style="margin-top:6px"><button class="btn" id="st_go">Add</button>
+      <button class="btn q" id="st_cancel">Cancel</button></div>`,root=>{
+    root.querySelector('#st_cancel').onclick=closeModal;
+    root.querySelector('#st_go').onclick=async()=>{
+      const err=root.querySelector('#st_err'); err.textContent='';
+      const names=root.querySelector('#st_names').value.split('\n');
+      try{ await addStudents(names); closeModal(); }
+      catch(e){ err.textContent='That did not save. Check your connection and try again.'; }
+    };
+  });
+}
+
+function rollModal(sid){
+  const s=D.sessions.find(x=>x.id===sid); if(!s) return;
+  const cur=ATT[sid]||{present:[],guests:0};
+  const present=new Set(cur.present||[]);
+  const local=activeStu().slice();
+  openModal(`
+    <h3>Take roll</h3>
+    <p class="when">${fmtLong(s.date)}${s.lesson?` · Lesson ${esc(s.lesson)}`:''}</p>
+    <div id="rl_list"></div>
+    <div style="margin-top:14px"><label for="rl_new">Add a student</label>
+      <div class="addrow"><input id="rl_new" placeholder="First name and last initial" maxlength="60" autocomplete="off">
+        <button class="btn q" id="rl_add" type="button">Add</button></div></div>
+    <div style="margin-top:14px"><label for="rl_g">Visitors not on the list</label>
+      <input type="number" id="rl_g" min="0" max="99" value="${cur.guests||0}" style="width:90px"></div>
+    <p class="rollsum" id="rl_count"></p><p class="err" id="rl_err" role="alert"></p>
+    <div class="acts" style="margin-top:6px"><button class="btn" id="rl_save">Save roll</button>
+      <button class="btn q" id="rl_cancel">Cancel</button></div>`,root=>{
+    const q=x=>root.querySelector(x);
+    const guests=()=>Math.max(0,Math.min(99,parseInt(q('#rl_g').value,10)||0));
+    const total=()=>{
+      const n=[...present].length+guests();
+      q('#rl_count').textContent=`${n} here`;
+    };
+    function draw(){
+      local.sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+      q('#rl_list').innerHTML = local.length
+        ? local.map(x=>`<label class="chk${present.has(x.id)?' on':''}"><input type="checkbox" data-id="${x.id}"${present.has(x.id)?' checked':''}> ${esc(x.name)}</label>`).join('')
+        : `<p class="hint" style="margin:0">No students on the roll yet. Add the first one below.</p>`;
+      q('#rl_list').querySelectorAll('input[type=checkbox]').forEach(c=>c.onchange=()=>{
+        if(c.checked) present.add(c.dataset.id); else present.delete(c.dataset.id);
+        c.parentElement.classList.toggle('on',c.checked); total();
+      });
+      total();
+    }
+    draw();
+    q('#rl_g').oninput=total;
+    q('#rl_cancel').onclick=closeModal;
+    const err=q('#rl_err');
+    const addOne=async()=>{
+      err.textContent='';
+      const v=q('#rl_new').value;
+      if(!v.trim()) return;
+      if(local.some(x=>String(x.name).toLowerCase()===v.trim().replace(/\s+/g,' ').toLowerCase())){
+        err.textContent='That name is already on the list.'; return;
+      }
+      try{
+        const added=await addStudents([v],local);
+        added.forEach(x=>{local.push(x); present.add(x.id);});
+        q('#rl_new').value=''; draw(); q('#rl_new').focus();
+      }catch(e){ err.textContent='That student did not save. Check your connection and try again.'; }
+    };
+    q('#rl_add').onclick=addOne;
+    q('#rl_new').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); addOne(); } });
+    q('#rl_save').onclick=async()=>{
+      err.textContent='';
+      const btn=q('#rl_save'); btn.disabled=true; btn.textContent='Saving…';
+      try{
+        await db.collection('sis-attendance').doc(sid).set({present:[...present],guests:guests(),updated:Date.now(),by:(user&&user.email)||''});
+        closeModal();
+      }catch(e){
+        btn.disabled=false; btn.textContent='Save roll';
+        err.textContent=(e&&e.code==='permission-denied')
+          ? 'This account is not allowed to save roll yet. Ask Eric to check the editor list and rules.'
+          : 'The roll did not save. Check your connection and try again.';
+      }
+    };
+  });
+}
+
+function csvCell(v){
+  v=String(v==null?'':v);
+  if(/^[=+\-@\t\r]/.test(v)) v="'"+v;      // keeps spreadsheets from reading a name as a formula
+  return '"'+v.replace(/"/g,'""')+'"';
+}
+function downloadFile(name,text,type){
+  const blob=new Blob([text],{type});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+}
+function rollCsv(){
+  const names={}; STU.forEach(x=>{names[x.id]=x.name});
+  const rows=[['Date','Lesson','Topic','On roll','Visitors','Total here','Names present']];
+  byDate().filter(s=>ATT[s.id]).forEach(s=>{
+    const a=ATT[s.id], n=(a.present||[]).map(id=>names[id]||'(removed student)').sort();
+    rows.push([s.date,s.lesson||'',s.topic||'',n.length,a.guests||0,n.length+(a.guests||0),n.join('; ')]);
+  });
+  downloadFile(`succeed-attendance-${today()}.csv`,'\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8');
+}
+async function backupAll(){
+  if(!isOwner) return;
+  const grab=async c=>{ try{ return await db.collection(c).get(); }catch(e){ return null; } };
+  const [st,at]=await Promise.all([grab('sis-students'),grab('sis-attendance')]);
+  const out={exported:new Date().toISOString(),schedule:D,
+    students:st?st.docs.map(d=>({id:d.id,...d.data()})):[],
+    attendance:at?Object.fromEntries(at.docs.map(d=>[d.id,d.data()])):{},
+    rollIncluded:!!(st&&at)};
+  downloadFile(`succeed-backup-${today()}.json`,JSON.stringify(out,null,2),'application/json');
+  if(!out.rollIncluded) alert('The schedule was backed up, but the roll could not be read, so it is not in the file.');
 }
 
 /* Assign a pair of instructors to every session on one class day. They trade
@@ -742,6 +944,7 @@ load().then(()=>{ loaded=true; render(); }).catch(()=>{
 });
 if(auth) auth.onAuthStateChanged(async u=>{
   user=u; isEditor=await checkEditor(u);
+  if(isEditor) startRoll(); else stopRoll();
   if(isEditor && wantEdit) editing=true;
   wantEdit=false;
   if(!isEditor) editing=false;
