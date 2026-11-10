@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Practice finder — Succeed in School, Westland Stake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#01B6D1; --cyan-dk:#0193A9; --crimson:#BD1C56; --green:#6DB344; --gold:#FFB81C;
+  --ink:#1F2933; --slate:#5A6672; --mute:#8A949E; --line:#E3E7EA; --wash:#F5F7F8; --paper:#fff;
+  --r:10px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink); background:var(--wash);
+  font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 72px}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* header */
+header{background:var(--paper);border-bottom:1px solid var(--line)}
+.hd{max-width:760px;margin:0 auto;padding:20px 18px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{margin:0;font-size:1.32rem;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+.sub{margin:3px 0 0;color:var(--slate);font-size:.92rem}
+.ghost{background:none;border:1px solid var(--line);color:var(--slate);padding:7px 13px;border-radius:var(--r);font-weight:600;font-size:.87rem;white-space:nowrap}
+.ghost:hover{border-color:var(--cyan);color:var(--cyan-dk)}
+input{font-family:inherit;font-size:.94rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:8px;padding:7px 9px;max-width:100%}
+input:hover{border-color:#c9d1d6}
+h2{font-size:.95rem;font-weight:700;margin:34px 0 12px;letter-spacing:-.005em}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+label{display:block;font-size:.83rem;font-weight:600;color:var(--slate);margin-bottom:4px}
+.f input{width:100%}
+.btn{background:var(--cyan);border:1px solid var(--cyan);color:#fff;font-weight:700;
+  padding:9px 18px;border-radius:var(--r);font-size:.94rem}
+.btn:hover{background:var(--cyan-dk);border-color:var(--cyan-dk)}
+.btn.q{background:none;color:var(--slate);border-color:var(--line);font-weight:600}
+.btn.q:hover{background:var(--wash);color:var(--ink)}
+a.btn{text-decoration:none;display:inline-block}
+.acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.veil{position:fixed;inset:0;background:rgba(31,41,51,.45);display:flex;align-items:center;
+  justify-content:center;padding:16px;z-index:50}
+.modal{background:var(--paper);border-radius:14px;padding:22px;width:100%;max-width:460px;
+  max-height:88vh;overflow:auto;box-shadow:0 12px 32px rgba(31,41,51,.24)}
+.modal h3{margin:0 0 4px;font-size:1.1rem}
+.modal .when{color:var(--slate);font-size:.9rem;margin:0 0 18px}
+.note{background:#FFFBEF;border:1px solid #F5E3B8;border-radius:10px;padding:12px 14px;
+  font-size:.89rem;color:#6B5518;line-height:1.5;margin-top:26px}
+.load{padding:60px 0;text-align:center;color:var(--mute)}
+
+/* site navigation (shared by all pages) */
+.site{background:var(--ink);color:#fff}
+.site-in{max-width:760px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:space-between;gap:6px 18px;flex-wrap:wrap}
+.brand{color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:9px;padding:4px 0}
+.brand:hover{color:#fff}
+.brand i{width:9px;height:9px;border-radius:50%;background:var(--cyan);flex:none}
+.brand span{font-weight:400;opacity:.65}
+.links{display:flex;gap:2px;flex-wrap:wrap;margin:0 -10px}
+.links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.9rem;font-weight:600;padding:7px 10px;border-radius:7px}
+.links a:hover{color:#fff;background:rgba(255,255,255,.09)}
+.links a[aria-current="page"]{color:#fff;background:rgba(1,182,209,.22)}
+@media print{.site{display:none}}
+
+.hd-acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.who-in{font-size:.84rem;color:var(--mute)}
+.linkbtn{background:none;border:none;padding:0;color:var(--cyan-dk);font-weight:600;font-size:.86rem;text-decoration:underline;text-underline-offset:2px}
+.linkbtn:hover{color:var(--ink)}
+.err{color:var(--crimson);font-size:.88rem;margin:10px 0 0;min-height:1.2em}
+.okmsg{color:#3F7A1E;font-size:.88rem;margin:10px 0 0}
+@media(max-width:560px){ .hd{flex-direction:column} }
+
+/* ---------- practice finder ---------- */
+.step{font-size:.83rem;font-weight:700;color:var(--slate);margin:26px 0 9px;letter-spacing:.01em}
+.step b{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;
+  background:var(--ink);color:#fff;font-size:.72rem;margin-right:7px;vertical-align:1px}
+.grades{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.gbtn{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 4px 9px;text-align:center;color:var(--ink)}
+.gbtn .n{display:block;font-size:1.45rem;font-weight:700;line-height:1.1;letter-spacing:-.02em}
+.gbtn .t{display:block;font-size:.74rem;color:var(--mute);font-weight:600}
+.gbtn:hover{border-color:var(--cyan)}
+.gbtn[aria-pressed="true"]{background:var(--cyan);border-color:var(--cyan);color:#fff}
+.gbtn[aria-pressed="true"] .t{color:#fff;opacity:.85}
+.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg button{background:none;border:none;border-radius:9px;padding:8px 18px;font-weight:600;color:var(--slate)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg button:hover:not([aria-pressed="true"]){background:var(--wash);color:var(--ink)}
+.search{position:relative;margin-top:22px}
+.search input{width:100%;padding:11px 12px 11px 38px;border-radius:12px;font-size:1rem}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--mute)}
+.course{margin:22px 0 0;color:var(--slate);font-size:.93rem}
+.course b{color:var(--ink)}
+.topics{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+details.topic{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+details.topic[open]{border-color:#BFE9F0;box-shadow:0 1px 3px rgba(31,41,51,.06)}
+.topic summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.topic summary::-webkit-details-marker{display:none}
+.topic summary:hover{background:#FAFCFC}
+.tt{flex:1;min-width:0;font-weight:600;font-size:1.03rem;line-height:1.3}
+.tc{font-size:.8rem;color:var(--mute);white-space:nowrap}
+.chev{flex:none;width:18px;height:18px;color:var(--mute);transition:transform .15s}
+details[open] .chev{transform:rotate(90deg);color:var(--cyan-dk)}
+.gtag{font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--wash);color:var(--slate);white-space:nowrap;margin-left:6px;vertical-align:1px}
+.tb{padding:0 16px 14px}
+.ask{background:#F0FBFD;border-radius:9px;padding:10px 12px;font-size:.93rem;color:#0E5F6C;margin:0 0 10px}
+.ask span{font-weight:700}
+.extra{font-size:.86rem;color:var(--mute);margin:0 0 10px}
+.les{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.les:first-of-type{border-top:none}
+.les-n{flex:1;min-width:0;font-size:.97rem}
+.les-n small{display:block;color:var(--mute);font-size:.78rem}
+.les .btn{padding:7px 14px;font-size:.88rem;white-space:nowrap}
+.gap{background:var(--paper);border:1px dashed #D3DADF;border-radius:12px;padding:14px 16px;margin-top:22px}
+.gap h3{margin:0 0 6px;font-size:.92rem}
+.gap p{margin:0 0 8px;font-size:.88rem;color:var(--slate)}
+.gap ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.gap li{font-size:.84rem;background:var(--wash);color:var(--slate);border-radius:20px;padding:3px 10px}
+.empty{padding:16px;color:var(--mute);font-size:.94rem;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.pick{padding:26px 16px;text-align:center;color:var(--mute);background:var(--paper);border:1px dashed #D3DADF;border-radius:12px;margin-top:22px}
+@media(max-width:560px){
+  .grades{grid-template-columns:repeat(4,1fr)}
+  .seg{display:flex}
+  .seg button{flex:1;padding:8px 6px}
+  .les{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<nav class="site" aria-label="Succeed in School pages"><div class="site-in">
+  <a class="brand" href="index.html"><i aria-hidden="true"></i>Succeed in School <span>Westland Stake</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="guide.html">Instructor guide</a>
+    <a href="library.html">Library</a>
+    <a href="practice.html" aria-current="page">Practice finder</a>
+  </div>
+</div></nav>
+
+<header><div class="hd">
+  <div>
+    <h1>Practice finder</h1>
+    <p class="sub">Find a free practice lesson for a student in a few taps</p>
+  </div>
+  <div class="hd-acts">
+    <span class="who-in" id="whoIn" hidden></span>
+    <button class="ghost" id="signInBtn" hidden>Sign in</button>
+    <button class="linkbtn" id="signOutBtn" hidden>Sign out</button>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="load" id="loading">Loading…</div>
+  <main id="app" hidden></main>
+</div>
+
+<div id="modalRoot"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAf5yDlKPnlT7xgE3tfPkUQxg4izZB2qk8",
+  authDomain: "succeed-in-school.firebaseapp.com",
+  projectId: "succeed-in-school",
+  storageBucket: "succeed-in-school.firebasestorage.app",
+  messagingSenderId: "519921024395",
+  appId: "1:519921024395:web:11c8d1ac1aaf27495a838e"
+};
+let db=null, auth=null;
+try{
+  firebase.initializeApp(FIREBASE_CONFIG);
+  db=firebase.firestore(); auth=firebase.auth();
+}catch(e){ console.error('Firebase init failed', e); }
+
+/* =====================================================================
+   PRACTICE DATA — edit here.
+   Lessons are free pages on the BYU-Pathway Resource Center. Each topic
+   lists lesson IDs from LESSONS below. Topics are matched to the Utah Core
+   standards for each grade (see "Utah Standards to Pathway Lessons
+   Matrix.xlsx" in the UEN Standards folder for the full mapping).
+   ===================================================================== */
+const BASE='https://resourcecenter.byupathway.edu/';
+const LESSONS={
+'m01-06':"Relative References in Excel",
+'m01-07':"Absolute References in Excel",
+'m01-14':"Graphing Two Lines Using a Scatter Plot with Connected Lines",
+'m02-01':"Whole Numbers, Integers, and Real Numbers",
+'m02-02':"Introduction to Positive and Negative Numbers",
+'m02-03':"Introduction to Place Values",
+'m02-04':"Introduction to Addition",
+'m02-05':"Introduction to Subtraction",
+'m02-06':"Subtracting From a Negative Number",
+'m02-07':"What Does it Mean to Subtract a Negative Number?",
+'m02-08':"Addition and Subtraction with Positive and Negative Numbers",
+'m03-01':"Addition with Larger Numbers",
+'m03-02':"Subtraction with Larger Numbers",
+'m03-03':"Place Values After the Decimal Point",
+'m03-04':"Addition and Subtraction with Decimal Numbers",
+'m03-05':"Round a Number to the Nearest Whole Number or Integer",
+'m03-06':"Round a Number to a Specific Precision",
+'m04-01':"Introduction to Multiplication",
+'m04-02':"Introduction to Exponents",
+'m04-03':"Multiplication",
+'m04-04':"Division",
+'m04-05':"Multiplication and Division by Powers of 10",
+'m04-06':"Multiplication with Decimal Numbers",
+'m04-07':"Multiplication and Division with Negative Numbers",
+'m04-08':"Division with Decimal Results",
+'m08-07':"Rules of Exponents",
+'m05-01':"Long Division with Two Digits",
+'m05-02':"Dividing by a Decimal",
+'m05-03':"Introduction to Percentages",
+'m05-04':"Converting Between Decimals and Percentages",
+'m05-05':"Calculating Percentages",
+'m05-06':"Finding the Percentage of an Amount",
+'m05-08':"Convert Between Fractions and Percentages",
+'m06-01':"Order of Operations",
+'m06-02':"The Distributive Property of Multiplication",
+'m06-03':"Introduction to Variables",
+'m06-04':"Simplifying Expressions with Variables",
+'m06-05':"Simplifying Expressions with Like Terms",
+'m07-01':"Prime Factorization",
+'m07-02':"Introduction to Fractions",
+'m07-03':"Simplifying Fractions",
+'m07-04':"Addition and Subtraction of Fractions with Common Denominators",
+'m07-05':"Least Common Multiple",
+'m07-06':"Finding Common Denominators",
+'m07-07':"Converting Between Improper Fractions and Mixed Numbers",
+'m07-08':"Multiplying Fractions",
+'m07-09':"Dividing Fractions",
+'m09-01':"Solving for a Variable on One Side Using Addition and Subtraction",
+'m09-02':"Solving for a Variable on One Side Using Multiplication",
+'m09-03':"Solving for a Variable on One Side Using Multiplication, Addition, and Subtraction",
+'m09-04':"Solving for a Variable on One Side Using Addition and Subtraction with Fractions",
+'m09-05':"Solving for a Variable on One Side Using Multiplication and Division with Fractions",
+'m09-06':"Solving for a Variable Using Addition, Subtraction, Multiplication, and Division with Fractions",
+'m09-07':"Solving Variables on Both Sides of the Equation",
+'m09-08':"Equations with Infinite Solutions and Equations with No Solution",
+'m09-09':"Substitute Values into an Equation and Solve for a Variable",
+'m10-01':"Introduction to Units",
+'m10-02':"Perimeter of a Rectangle",
+'m10-03':"Introduction to Area: Rectangles",
+'m10-04':"Introduction to Volume",
+'m10-05':"Perimeter of a Triangle",
+'m10-06':"Area of a Triangle",
+'m11-01':"Pi and the Circumference of a Circle",
+'m11-02':"Area of a Circle",
+'m11-03':"Volume of a Right Circular Cylinder",
+'m12-01':"Units and Dimensions",
+'m12-02':"Introduction to Unit Conversions",
+'m12-03':"Unit Conversions with Multiple Conversion Factors",
+'m12-04':"Unit Conversions for Area",
+'m12-05':"Unit Conversions for Volume",
+'m12-06':"Perform Unit Conversions for Speeds",
+'m13-01':"Plot Points on a Coordinate System",
+'m13-02':"Interpret Graphs of a Coordinate System",
+'m13-04':"Describe the Concept of a Function (or Formula)",
+'m13-05':"Plot Values from Discrete and Continuous Functions",
+'m14-01':"Introduction to Slopes",
+'m14-02':"Line Slope Value",
+'m14-03':"X and Y Intercepts of a Line",
+'m14-04':"Forecasting Using a Graph",
+'m14-05':"Identify the Slope and Intercept of a Line in Slope-Intercept Form",
+'m14-06':"Plot a Line by Connecting Points",
+'m14-07':"Find the X and Y Intercepts of a Line Using Algebra",
+'m14-08':"How to Find the Slope of a Line Between Two Points",
+'m14-09':"Graphing a Line Using the Slope and Y-Intercept",
+'m14-10':"Convert Any Linear Equation to Slope-Intercept Form of a Line",
+'m14-11':"Point-Slope Form of a Line",
+'m14-12':"How to Find the Equation of a Line from Two Points",
+'m14-13':"Interpreting Slope",
+'m15-04':"Explain the Concept of Functions in Excel",
+'m15-05':"Apply the PMT Function in Excel",
+'m15-06':"Find the Total Cost of a Loan Given the Payment Information",
+'m15-07':"Use Excel to Find the Payment and Total Interest on a Loan",
+'w01-01':"Introduction to the Basic Paragraph",
+'w01-02':"Parts of the Basic Paragraph",
+'w02-01':"Purpose of the Introductory Paragraph",
+'w02-02':"Parts of the Introductory Paragraph",
+'w03-01':"Introduction to the Body Paragraph",
+'w03-02':"Parts of the Body Paragraph",
+'w04-01':"Purpose of the Concluding Paragraph",
+'w04-02':"Parts of the Concluding Paragraph",
+'w05-01':"Introduction to Formatting the Essay",
+'w05-02':"Font",
+'w05-03':"Spacing",
+'w05-04':"Margins",
+'w05-05':"Heading",
+'w05-06':"Title",
+'w05-07':"Paragraphs",
+'w06-01':"Introduction to Purpose",
+'w06-02':"Purpose in Informative Writing",
+'w06-03':"Audience in Informative Writing",
+'w07-01':"Introduction to Evaluating Sources",
+'w07-02':"Is the source current?",
+'w07-03':"Is the source relevant?",
+'w07-04':"Is the source authoritative?",
+'w07-05':"Is the source accurate?",
+'w07-06':"Does the source have a clear purpose?",
+'w08-01':"Introduction to Quote Integration",
+'w08-02':"Introduce the Source",
+'w08-03':"Cite the Source",
+'w08-04':"Explain the Source",
+'w08-05':"Putting it Together: Quote Integration",
+'w09-01':"Introduction to Transitions",
+'w09-02':"The Purpose of Transitions",
+'w09-03':"Within-paragraph Transitions",
+'w09-04':"Transitions Between Paragraphs",
+'w10-01':"Introduction to the Résumé",
+'w10-02':"Résumé Sections and Format",
+'w10-03':"Contact Information Section",
+'w10-04':"Headline Section",
+'w10-05':"Summary Section",
+'w10-06':"Skills Section",
+'w10-07':"Experience Section",
+'w10-08':"Education Section",
+'w10-09':"Formatting Tips and Examples",
+'w11-01':"Introduction to Professional Communities",
+'w11-02':"How to Join a Professional Community",
+'w12-01':"Introduction to Writing in a Group",
+'w12-02':"How to Write in a Group",
+'w12-03':"Tips for Successful Collaboration",
+'w13-01':"Introduction to Oral vs. Written Communication",
+'w13-02':"Differences Between Oral and Written Communication",
+'w13-03':"Which to Use and When",
+'w13-04':"Review of Oral vs. Written Communication",
+'w14-01':"Introduction to Email and Text",
+'w14-02':"Email",
+'w14-03':"Text",
+'e01-01':"Meet the Sentence",
+'e01-02':"Basic Modifiers",
+'e01-03':"Prepositions and Conjunctions",
+'e01-04':"Building Sentences",
+'e01-05':"Sentence Fragments",
+'e01-06':"How to Fix Sentence Fragments",
+'e01-07':"Identifying Sentence Fragments",
+'e01-08':"Run-on Sentences",
+'e01-09':"Comma Splice Run-on Sentences",
+'e01-10':"Subject-Verb Agreement 01",
+'e01-11':"Subject-Verb Agreement Situations, Part 1",
+'e01-12':"Subject-Verb Agreement Review",
+'e01-13':"Subject-Verb Agreement Situations, Part 2",
+'e01-14':"Using Correct Tense",
+'e01-15':"Writing Concisely",
+'e01-16':"Confused Words",
+'e01-17':"Writing Concisely II",
+'e01-18':"Parallel Structure",
+'e01-19':"Basic Verb Tenses",
+'e01-20':"Present and Past Continuous Tenses",
+'e01-21':"Common Pronoun Errors",
+'e01-22':"Active Verbs",
+'e01-23':"Comma Use",
+'e01-24':"Connect Ideas",
+'e01-25':"Quotation Marks",
+'e01-26':"Direct Quotes",
+'e01-27':"Articles a, an, and the"
+};
+const lessonUrl=id=> id==='w01-01' ? BASE+'writing/w01/introduction-to-the-basic-paragraph'
+  : BASE+({m:'math',w:'writing',e:'english'}[id[0]])+'/'+id;
+
+const GRADE_INFO={
+  6:{course:'6th grade math'},
+  7:{course:'7th grade math'},
+  8:{course:'8th grade math'},
+  9:{course:'Usually Secondary Math I'},
+  10:{course:'Usually Secondary Math II', thin:true},
+  11:{course:'Usually Secondary Math III', thin:true},
+  12:{course:'Often Precalculus or a senior math class', thin:true}
+};
+
+/* g = grades where the topic is taught this year. ask = a question to ask the student. */
+const MATH=[
+  {id:'basics', g:[], t:'Whole-number basics: add, subtract, multiply', ask:'Can you show me how you’d solve 47 × 6 on paper?', l:['m02-03','m02-04','m02-05','m03-01','m03-02','m04-01','m04-03'], k:'place value addition subtraction multiplication'},
+  {id:'neg-intro', g:[6], t:'Positive & negative numbers', ask:'Which is bigger, −3 or −7? How do you know?', l:['m02-01','m02-02'], k:'integers number line negative'},
+  {id:'neg-add', g:[7], t:'Adding & subtracting negative numbers', ask:'What do you get for −5 − (−8)?', l:['m02-06','m02-07','m02-08'], k:'integers negative'},
+  {id:'neg-mult', g:[7], t:'Multiplying & dividing negative numbers', ask:'Is −4 × −3 positive or negative?', l:['m04-07'], k:'integers negative'},
+  {id:'long-div', g:[6], t:'Long division', ask:'Are you dividing by one-digit or two-digit numbers?', l:['m04-04','m05-01'], k:'divide division'},
+  {id:'decimals', g:[6], t:'Decimals: add, subtract, multiply & divide', ask:'Are you adding/subtracting decimals, or multiplying/dividing them?', l:['m03-03','m03-04','m04-06','m05-02'], k:'decimal'},
+  {id:'factors', g:[6], t:'Factors, GCF & LCM', ask:'Are you finding common factors or common multiples?', l:['m07-01','m07-05','m06-02'], k:'prime factorization greatest common factor least common multiple'},
+  {id:'frac-basics', g:[6,7], t:'Fraction basics: simplifying & mixed numbers', ask:'Can you simplify 12/18 for me?', l:['m07-02','m07-03','m07-07'], k:'fractions improper mixed'},
+  {id:'frac-add', g:[6,7], t:'Adding & subtracting fractions', ask:'Do the fractions have the same bottom number, or different ones?', l:['m07-04','m07-05','m07-06'], k:'fractions common denominator'},
+  {id:'frac-muldiv', g:[6,7], t:'Multiplying & dividing fractions', ask:'Are you multiplying fractions, dividing them, or something else?', l:['m07-08','m07-09'], k:'fractions'},
+  {id:'frac-dec-pct', g:[6,7], t:'Fractions → decimals → percents', ask:'Can you turn 3/8 into a decimal? Into a percent?', l:['m04-08','m05-04','m05-08'], k:'fractions decimal results convert percentage'},
+  {id:'percent', g:[6,7], t:'Percent problems: tax, tips & discounts', ask:'If a $40 shirt is 25% off, what do you pay?', l:['m05-03','m05-05','m05-06'], k:'percentage percent of'},
+  {id:'rounding', g:[6,7], t:'Rounding & estimating', ask:'Round 3.476 to the nearest tenth.', l:['m03-05','m03-06'], k:'round estimate precision'},
+  {id:'exp-ooo', g:[6,7], t:'Exponents & order of operations', ask:'What do you do first in 3 + 4 × 2²?', l:['m04-02','m06-01'], k:'PEMDAS powers'},
+  {id:'expressions', g:[6,7], t:'Variables & simplifying expressions', ask:'Can you simplify 3x + 2 + 5x?', l:['m06-03','m06-04','m06-05','m06-02'], k:'like terms distributive property algebra'},
+  {id:'eq-1', g:[6], t:'One-step equations', ask:'How would you solve x + 7 = 12?', l:['m09-01','m09-02','m09-04','m09-05'], k:'solve for x variable equation'},
+  {id:'eq-2', g:[7], t:'Two-step equations', ask:'How would you solve 3x + 4 = 19?', l:['m09-03','m09-06'], k:'solve for x variable equation'},
+  {id:'eq-both', g:[8,9], t:'Equations with variables on both sides', ask:'How would you solve 5x − 3 = 2x + 9?', l:['m09-07','m09-08','m09-06'], k:'solve for x linear equation no solution infinite'},
+  {id:'formulas', g:[9,10,11], t:'Using & rearranging formulas', ask:'Can you solve d = rt for t?', l:['m09-09','m14-10'], k:'substitute literal equation'},
+  {id:'rates', g:[6,7], t:'Rates, speed & unit conversions', ask:'How many feet are in 3.5 yards?', l:['m12-01','m12-02','m12-03','m12-06'], k:'unit rate convert miles per hour'},
+  {id:'units', g:[9,11], t:'Units in word problems (area & volume units)', ask:'How many square feet are in a square yard?', l:['m10-01','m12-04','m12-05'], k:'unit conversion density'},
+  {id:'coord', g:[6], t:'Graphing points on a coordinate plane', ask:'Can you plot the point (−2, 3)?', l:['m13-01','m13-02'], k:'graph quadrants ordered pairs'},
+  {id:'area', g:[6,7], t:'Perimeter & area of rectangles and triangles', ask:'What’s the area of a triangle with base 6 and height 4?', l:['m10-02','m10-03','m10-05','m10-06'], k:'geometry'},
+  {id:'volume', g:[6,7], t:'Volume of boxes & cylinders', ask:'How do you find how much a box holds?', l:['m10-04','m11-03'], k:'geometry volume prism'},
+  {id:'circles', g:[7], t:'Circles: circumference & area', ask:'Do you know the formula for the area of a circle?', l:['m11-01','m11-02'], k:'pi radius diameter geometry'},
+  {id:'cyl', g:[8,10], t:'Circle & cylinder formulas', ask:'How would you find the volume of a can?', l:['m11-01','m11-02','m11-03'], k:'pi volume geometry'},
+  {id:'prop', g:[7], t:'Proportional relationships on a graph', ask:'If you earn $12 an hour, what does the graph of your pay look like?', l:['m14-01','m14-13','m13-02'], k:'unit rate slope'},
+  {id:'functions', g:[6,8,9], t:'What is a function? Tables & graphs', ask:'If y = 2x + 1, what is y when x = 3?', l:['m13-04','m13-05'], k:'input output relationship'},
+  {id:'exp-rules', g:[8], t:'Exponent rules', ask:'What is x³ · x⁴?', l:['m04-02','m08-07'], k:'powers negative exponents'},
+  {id:'pow10', g:[8], t:'Powers of 10 (scientific notation prep)', ask:'What is 4.2 × 10³?', l:['m04-05'], k:'scientific notation'},
+  {id:'numtypes', g:[8], t:'Types of numbers (integers, rational, real)', ask:'Is 0.5 an integer? Is it rational?', l:['m02-01'], k:'irrational real number system'},
+  {id:'slope', g:[8,9], t:'Slope & rate of change', ask:'What’s the slope between (1, 2) and (3, 8)?', l:['m14-01','m14-02','m14-08','m14-13'], k:'rise over run lines'},
+  {id:'graph-lines', g:[8,9], t:'Graphing lines (y = mx + b)', ask:'In y = 2x + 3, what do the 2 and the 3 tell you?', l:['m14-05','m14-06','m14-09','m14-10'], k:'slope intercept form linear'},
+  {id:'intercepts', g:[8,9], t:'x- and y-intercepts', ask:'Where does y = 2x − 4 cross the x-axis?', l:['m14-03','m14-07'], k:'lines graph'},
+  {id:'line-eq', g:[8,9], t:'Writing the equation of a line', ask:'Can you write the line through (0, 1) and (2, 5)?', l:['m14-11','m14-12'], k:'point slope two points linear'},
+  {id:'forecast', g:[8,9], t:'Reading graphs & making predictions', ask:'From this graph, what would happen next month?', l:['m13-02','m14-04'], k:'interpret data trend'},
+  {id:'scatter', g:[8,9], t:'Scatter plots & graphing two lines (uses Excel)', ask:'Do you have a computer with Excel or Google Sheets?', l:['m01-14'], k:'excel data system of equations', x:'Needs Excel or Google Sheets.'},
+  {id:'money', g:[11,12], t:'Loans, interest & spreadsheets (life skills)', ask:'Have you ever figured out a car or phone payment?', l:['m15-06','m15-04','m15-05','m15-07','m01-06','m01-07'], k:'excel finance budget PMT', x:'Written for adults; great enrichment for older students. Needs Excel or Google Sheets for most lessons.'}
+];
+
+/* Topics to suggest as review when this year's math isn't covered well. */
+const REVIEW={6:['basics'], 7:['basics','decimals','long-div'], 8:['neg-add','frac-muldiv','eq-2'], 9:['neg-add','frac-muldiv','expressions','eq-2'],
+  10:['eq-both','slope','graph-lines','line-eq','exp-rules','frac-muldiv'], 11:['eq-both','slope','graph-lines','line-eq','exp-rules','frac-muldiv'],
+  12:['eq-both','slope','graph-lines','line-eq','exp-rules','frac-muldiv']};
+
+/* What each grade covers that Pathway does NOT have lessons for. */
+const MATH_GAPS={
+  6:['Ratios & ratio tables','Inequalities','Surface area & nets','Statistics: mean, median, data plots'],
+  7:['Scale drawings','Angles','Probability','Statistics & samples','Inequalities'],
+  8:['Square roots & irrational numbers','Scientific notation','Solving systems of equations','Transformations (slides, flips, turns)','Pythagorean theorem','Volume of cones & spheres'],
+  9:['Inequalities','Systems of equations','Exponential growth','Sequences','Geometry proofs & transformations','Statistics'],
+  10:['Quadratics','Polynomials','Radicals & rational exponents','Similar triangles & trigonometry','Circle theorems','Probability'],
+  11:['Polynomial & rational functions','Logarithms','Trig functions','Statistics & the normal curve'],
+  12:['Vectors & matrices','Complex numbers','Advanced trigonometry','Series','Probability']
+};
+
+const ALL=[6,7,8,9,10,11,12];
+const ELA=[
+  {id:'sentences', g:ALL, t:'Building complete sentences', ask:'Can you tell me the subject and verb in this sentence?', l:['e01-01','e01-02','e01-03','e01-04'], k:'grammar subject verb modifiers prepositions conjunctions'},
+  {id:'frag', g:ALL, t:'Fixing fragments & run-on sentences', ask:'Read this sentence out loud. Does it sound complete?', l:['e01-05','e01-06','e01-07','e01-08','e01-09'], k:'grammar comma splice'},
+  {id:'sva', g:ALL, t:'Subject–verb agreement', ask:'Which is right: “The list of chores is long” or “are long”?', l:['e01-10','e01-11','e01-12','e01-13'], k:'grammar'},
+  {id:'tense', g:ALL, t:'Verb tenses & strong verbs', ask:'Is your essay written in past or present tense?', l:['e01-19','e01-14','e01-20','e01-22'], k:'grammar active voice'},
+  {id:'pronouns', g:ALL, t:'Pronouns', ask:'Which is right: “Me and him went” or “He and I went”?', l:['e01-21'], k:'grammar'},
+  {id:'punct', g:ALL, t:'Commas & quotation marks', ask:'Where would you put the commas in this sentence?', l:['e01-23','e01-25','e01-26'], k:'punctuation grammar dialogue quotes'},
+  {id:'wordchoice', g:ALL, t:'Word choice & writing concisely', ask:'Their, there, or they’re — which one goes here?', l:['e01-16','e01-15','e01-17','e01-18','e01-27'], k:'confused words parallel structure articles wordy'},
+  {id:'paragraph', g:ALL, t:'Writing a strong paragraph', ask:'What’s the main point of this paragraph?', l:['w01-01','w01-02'], k:'topic sentence supporting details'},
+  {id:'essay', g:ALL, t:'Essay parts: introduction, body & conclusion', ask:'Which part of the essay are you working on?', l:['w02-01','w02-02','w03-01','w03-02','w04-01','w04-02'], k:'thesis intro conclusion body paragraph'},
+  {id:'transitions', g:ALL, t:'Transitions that connect ideas', ask:'How does this paragraph connect to the one before it?', l:['w09-01','w09-02','w09-03','w09-04','e01-24'], k:'flow connecting'},
+  {id:'purpose', g:ALL, t:'Purpose & audience (informative writing)', ask:'Who is going to read this, and what should they learn?', l:['w06-01','w06-02','w06-03'], k:'explain report'},
+  {id:'format', g:ALL, t:'Formatting an essay', ask:'Did your teacher give you formatting rules (font, spacing, heading)?', l:['w05-01','w05-02','w05-03','w05-04','w05-05','w05-06','w05-07'], k:'MLA font spacing margins heading title'},
+  {id:'sources', g:ALL, t:'Research: finding trustworthy sources', ask:'Where did you find this information? How do you know it’s reliable?', l:['w07-01','w07-02','w07-03','w07-04','w07-05','w07-06'], k:'credible research websites evaluate'},
+  {id:'quotes', g:ALL, t:'Using quotes & citing sources', ask:'Are you quoting someone? How will you show where it came from?', l:['w08-01','w08-02','w08-03','w08-04','w08-05'], k:'citation plagiarism evidence cite'},
+  {id:'group', g:ALL, t:'Group writing projects', ask:'Who is in your group, and what part is yours?', l:['w12-01','w12-02','w12-03'], k:'collaboration team'},
+  {id:'speaking', g:ALL, t:'Speaking vs. writing: choosing the right one', ask:'Is this assignment a speech, a paper, or both?', l:['w13-01','w13-02','w13-03','w13-04'], k:'oral communication presentation'},
+  {id:'resume', g:[10,11,12], t:'Résumés (life skills)', ask:'Are you applying for a job or scholarship?', l:['w10-01','w10-02','w10-03','w10-04','w10-05','w10-06','w10-07','w10-08','w10-09'], k:'job application resume', x:'Written for adults; great for older students applying for jobs.'},
+  {id:'email', g:[9,10,11,12], t:'Professional email & texting (life skills)', ask:'Do you need to email a teacher or an employer?', l:['w14-01','w14-02','w14-03'], k:'email text message'}
+];
+const ELA_GAPS=['Reading comprehension','Main idea & theme','Literature analysis','Vocabulary strategies','Story (narrative) writing','Giving presentations'];
+
+/* ---------- helpers ---------- */
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ord=n=>n+'th';
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let state={grade:+store.get('pf_grade')||null, subj:store.get('pf_subj')||'math', q:''};
+
+/* ---------- modal + sign-in (same pattern as the library page) ---------- */
+function openModal(html,onReady){
+  const root=document.getElementById('modalRoot');
+  root.innerHTML=`<div class="veil"><div class="modal f" role="dialog" aria-modal="true">${html}</div></div>`;
+  root.querySelector('.veil').onclick=e=>{if(e.target===e.currentTarget)closeModal()};
+  document.addEventListener('keydown',escClose);
+  onReady&&onReady(root);
+  const f=root.querySelector('input'); f&&f.focus();
+}
+const closeModal=()=>{document.getElementById('modalRoot').innerHTML='';document.removeEventListener('keydown',escClose)};
+function escClose(e){if(e.key==='Escape')closeModal()}
+function signInModal(){
+  openModal(`
+    <h3>Sign in</h3><p class="when">Use the email and password for your Succeed in School instructor account.</p>
+    <div><label for="a_em">Email</label><input type="email" id="a_em" autocomplete="username"></div>
+    <div style="margin-top:12px"><label for="a_pw">Password</label><input type="password" id="a_pw" autocomplete="current-password"></div>
+    <p class="err" id="a_err" role="alert"></p>
+    <div class="acts" style="margin-top:6px"><button class="btn" id="a_go">Sign in</button>
+      <button class="btn q" id="a_cancel">Cancel</button>
+      <button class="linkbtn" id="a_reset" style="margin-left:auto">Forgot password?</button></div>`,root=>{
+    const em=root.querySelector('#a_em'), pw=root.querySelector('#a_pw'), err=root.querySelector('#a_err');
+    root.querySelector('#a_cancel').onclick=closeModal;
+    const go=root.querySelector('#a_go');
+    const tryLogin=async()=>{
+      err.className='err'; err.textContent='';
+      if(!em.value.trim()||!pw.value){err.textContent='Enter your email and password.';return;}
+      go.disabled=true; go.textContent='Signing in…';
+      try{ await auth.signInWithEmailAndPassword(em.value.trim(),pw.value); closeModal(); }
+      catch(e){
+        const c=e&&e.code||'';
+        err.textContent = c==='auth/too-many-requests' ? 'Too many attempts. Wait a few minutes, or reset your password.'
+          : c==='auth/network-request-failed' ? 'No connection. Check your internet and try again.'
+          : 'That email and password do not match an instructor account.';
+        go.disabled=false; go.textContent='Sign in';
+      }
+    };
+    go.onclick=tryLogin;
+    pw.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+    root.querySelector('#a_reset').onclick=async()=>{
+      err.className='err'; err.textContent='';
+      if(!em.value.trim()){err.textContent='Enter your email first, then choose Forgot password.';return;}
+      try{ await auth.sendPasswordResetEmail(em.value.trim()); }catch(e){}
+      err.className='okmsg';
+      err.textContent='If that email has an instructor account, a reset link is on its way.';
+    };
+  });
+}
+
+/* ---------- finder ---------- */
+const CHEV='<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 4l6 6-6 6"/></svg>';
+function topicHTML(tp,opts={}){
+  const tag=opts.gradeTag ? `<span class="gtag">${esc(opts.gradeTag)}</span>` : '';
+  const rows=tp.l.map(id=>`<div class="les"><div class="les-n">${esc(LESSONS[id])}<small>Pathway lesson ${esc(id)}</small></div>
+      <a class="btn q" href="${esc(lessonUrl(id))}" target="_blank" rel="noopener" aria-label="Open ${esc(LESSONS[id])} (opens in a new tab)">Open ↗</a></div>`).join('');
+  return `<details class="topic"${opts.open?' open':''}><summary><span class="tt">${esc(tp.t)}${tag}</span>
+      <span class="tc">${tp.l.length} lesson${tp.l.length>1?'s':''}</span>${CHEV}</summary>
+    <div class="tb"><p class="ask"><span>Ask:</span> “${esc(tp.ask)}”</p>${tp.x?`<p class="extra">${esc(tp.x)}</p>`:''}${rows}</div></details>`;
+}
+function gradeLabel(tp){
+  if(!tp.g.length) return 'Review';
+  if(tp.g.length===ALL.length) return 'All grades';
+  const a=tp.g[0], b=tp.g[tp.g.length-1];
+  return a===b ? `Grade ${a}` : `Grades ${a}–${b}`;
+}
+function gradesHTML(){
+  return `<div class="step"><b>1</b>What grade is the student in?</div>
+    <div class="grades" role="group" aria-label="Grade">${ALL.map(g=>`<button class="gbtn" data-g="${g}" aria-pressed="${state.grade===g}">
+      <span class="n">${g}</span><span class="t">${ord(g)}</span></button>`).join('')}</div>
+    <div class="step"><b>2</b>What do they need help with?</div>
+    <div class="seg" role="group" aria-label="Subject">
+      <button data-s="math" aria-pressed="${state.subj==='math'}">Math</button>
+      <button data-s="ela" aria-pressed="${state.subj==='ela'}">Writing &amp; grammar</button></div>
+    <div class="search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+      <input type="search" id="q" placeholder="Or search any topic: fractions, slope, commas…" aria-label="Search topics" value="${esc(state.q)}"></div>
+    <div id="results"></div>
+    <p class="note">Lessons open on the free BYU-Pathway Resource Center. Each one has a short explanation, examples, and practice problems. To print, open the lesson and press <b>Ctrl+P</b> (<b>Cmd+P</b> on a Mac). Answers are on the same page, so check what you print before handing it to a student.</p>`;
+}
+function resultsHTML(){
+  const q=state.q.trim().toLowerCase();
+  if(q){
+    const words=q.split(/\s+/);
+    const hit=tp=>{const hay=(tp.t+' '+(tp.k||'')+' '+tp.l.map(id=>LESSONS[id]).join(' ')).toLowerCase(); return words.every(w=>hay.includes(w));};
+    const found=[...MATH.filter(hit).map(tp=>({tp,s:'Math'})),...ELA.filter(hit).map(tp=>({tp,s:'Writing'}))];
+    if(!found.length) return `<div class="topics"><div class="empty">No topics match “${esc(state.q)}”. Try a simpler word, like <i>fraction</i>, <i>equation</i>, or <i>comma</i>.</div></div>`;
+    return `<p class="course">${found.length} topic${found.length>1?'s':''} match “${esc(state.q)}”</p><div class="topics">`
+      + found.map(f=>topicHTML(f.tp,{gradeTag:(f.s==='Writing'?'Writing · ':'')+gradeLabel(f.tp),open:found.length===1})).join('')+'</div>';
+  }
+  const g=state.grade;
+  if(!g) return `<div class="pick">Pick a grade to see the topics that grade usually covers.</div>`;
+  if(state.subj==='ela'){
+    const list=ELA.filter(tp=>tp.g.includes(g));
+    return `<p class="course"><b>Writing &amp; grammar · ${ord(g)} grade.</b> These skills build every year, so the same lessons work for all grades.</p>
+      <div class="topics">${list.map(tp=>topicHTML(tp)).join('')}</div>
+      <div class="gap"><h3>Not on Pathway</h3><p>For these, use the student’s class materials or another resource.</p>
+      <ul>${ELA_GAPS.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  }
+  const info=GRADE_INFO[g];
+  const list=MATH.filter(tp=>tp.g.includes(g));
+  const rev=(REVIEW[g]||[]).map(id=>MATH.find(t=>t.id===id)).filter(Boolean);
+  let html=`<p class="course"><b>Math · ${ord(g)} grade</b> (${esc(info.course)}).`
+    + (info.thin ? ` Pathway only covers a few ${ord(g)} grade topics, but students at this level often need a quick review of the basics below.` : ` Topics this grade usually covers:`) + `</p>`;
+  if(list.length) html+=`<div class="topics">${list.map(tp=>topicHTML(tp)).join('')}</div>`;
+  if(rev.length) html+=`<h2>${info.thin?'Good review for this grade':'Review from earlier grades'}</h2><div class="topics">${rev.map(tp=>topicHTML(tp)).join('')}</div>`;
+  html+=`<div class="gap"><h3>Not on Pathway for ${ord(g)} grade</h3><p>For these, use the student’s class materials or another resource.</p>
+    <ul>${(MATH_GAPS[g]||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+function drawResults(){ document.getElementById('results').innerHTML=resultsHTML(); }
+function drawFinder(){
+  showApp(gradesHTML()); drawResults();
+  const app=document.getElementById('app');
+  app.querySelectorAll('.gbtn').forEach(b=>b.onclick=()=>{
+    state.grade=+b.dataset.g; state.q=''; store.set('pf_grade',state.grade);
+    app.querySelectorAll('.gbtn').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    document.getElementById('q').value=''; drawResults();
+  });
+  app.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{
+    state.subj=b.dataset.s; state.q=''; store.set('pf_subj',state.subj);
+    app.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    document.getElementById('q').value=''; drawResults();
+  });
+  document.getElementById('q').oninput=e=>{state.q=e.target.value; drawResults();};
+}
+
+/* ---------- page ---------- */
+function showApp(html){
+  document.getElementById('loading').hidden=true;
+  const app=document.getElementById('app'); app.hidden=false; app.innerHTML=html;
+}
+let user=null, isInstructor=false;
+async function checkInstructor(u){
+  if(!u) return false;
+  try{ const d=await db.collection('admins').doc(u.uid).get(); return d.exists; }catch(e){ return false; }
+}
+function chrome(){
+  const wi=document.getElementById('whoIn');
+  wi.hidden=!user; wi.textContent=user?`Signed in as ${user.email}`:'';
+  document.getElementById('signInBtn').hidden=!!user;
+  document.getElementById('signOutBtn').hidden=!user;
+}
+function render(){
+  chrome();
+  if(!user){
+    showApp(`<div class="panel" style="margin-top:26px;text-align:center;color:var(--slate)">
+      <p style="margin:0 0 14px">The practice finder is for Succeed in School instructors. Sign in to use it.</p>
+      <button class="btn" id="signInMain">Sign in</button></div>`);
+    document.getElementById('signInMain').onclick=signInModal; return;
+  }
+  if(!isInstructor){
+    showApp(`<div class="panel" style="margin-top:26px;text-align:center;color:var(--slate)">
+      <p style="margin:0">${esc(user.email)} does not have instructor access. Ask Eric to add this account.</p></div>`);
+    return;
+  }
+  drawFinder();
+}
+
+document.getElementById('signInBtn').onclick=signInModal;
+document.getElementById('signOutBtn').onclick=()=>auth.signOut();
+if(auth) auth.onAuthStateChanged(async u=>{ user=u; isInstructor=await checkInstructor(u); render(); });
+else document.getElementById('loading').textContent='The practice finder could not load. Refresh the page to try again.';
+</script>
+</body>
+</html>
